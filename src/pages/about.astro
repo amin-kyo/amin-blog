@@ -1,0 +1,274 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+const pageTitle = `About - ${SITE_TITLE}`;
+const pageDescription = '技術メモ、趣味の記録、活動ログを発信するブログの運営者について';
+
+const techStack = {
+  production: [
+    { name: 'HTML', level: 3, note: 'わりと好き' },
+    { name: 'CSS', level: 3, note: '好き' },
+    { name: 'JavaScript', level: 2, note: 'ちょっとだけ' },
+    { name: 'kintone', level: 3, note: '業務システム開発' },
+  ],
+  learning: [
+    { name: 'Astro', level: 2, note: 'このブログで触ってる' },
+    { name: 'React', level: 1, note: '触ってる' },
+    { name: 'Node.js', level: 1, note: '雰囲気' },
+    { name: 'AWS', level: 1, note: 'むずかしい' },
+    { name: 'GitHub', level: 2, note: 'このブログのソース管理' },
+    { name: 'Cloudflare Pages', level: 2, note: 'このブログのホスティング' },
+  ],
+};
+
+const profileData = [
+  { label: '職種', value: '企画屋さん' },
+  { label: '職歴', value: '下水処理場オペレーター (6年) → DX推進・企画' },
+  { label: '専門領域', value: '企画・提案、調整、従業員教育、動画・資料制作' },
+];
+
+const certifications = [
+  '基本情報技術者',
+  '下水道第3種技術検定',
+  'カラーコーディネーター3級',
+];
+
+const interests = {
+  tech: ['Webデザイン', 'UI/UX', 'CSS', 'IT分野全般'],
+  hobbies: ['PC・ガジェット', 'ビデオゲーム', 'クラフトビール','ウイスキー','ダーツ', '歌','インテリア', '自転車', 'キャンプ'],
+};
+
+const blogStats = [
+  { label: 'コンテンツ', value: '技術メモ、趣味記録、活動ログ' },
+  { label: '環境', value: 'Astro + GitHub + Cloudflare Pages' },
+  { label: '執筆環境', value: 'iPad mini + GitHub Web Editor' },
+];
+
+const renderStars = (level: number) => {
+  return '⭐'.repeat(level);
+};
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <style>
+
+
+      .section h2 {
+        border-bottom: 2px solid #333;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+      }
+      
+      .table th,
+      .table td {
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+        text-align: left;
+      }
+      
+      .table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+      }
+      
+      .table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+      
+      .interests-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .interest-category h3 {
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+      
+      .interest-list {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .interest-list li {
+        padding: 0.25rem 0;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .interest-list li:last-child {
+        border-bottom: none;
+      }
+      
+      .cert-list {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .cert-list li {
+        padding: 0.5rem 0;
+        border-left: 3px solid var(--accent);
+        padding-left: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      @media (max-width: 640px) {
+        .about-container {
+          padding: 1rem;
+        }
+        
+        .table {
+          font-size: 0.9rem;
+        }
+        
+        .interests-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    
+    <main class="about-container">    
+      <section class="section">
+        <h2>Overview</h2>
+        <p>あみんのメモ、あみめもです。自分の遊び場です。</p>
+      </section>
+      
+      <section class="section">
+        <h2>Profile</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            {profileData.map((item) => (
+              <tr>
+                <td>{item.label}</td>
+                <td>{item.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+      
+      <section class="section">
+        <h2>Tech Stack</h2>
+        
+        <h3>Production</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Level</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            {techStack.production.map((tech) => (
+              <tr>
+                <td>{tech.name}</td>
+                <td>{renderStars(tech.level)}</td>
+                <td>{tech.note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        
+        <h3>Learning</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Level</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            {techStack.learning.map((tech) => (
+              <tr>
+                <td>{tech.name}</td>
+                <td>{renderStars(tech.level)}</td>
+                <td>{tech.note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+      
+      <section class="section">
+        <h2>Certifications</h2>
+        <ul class="cert-list">
+          {certifications.map((cert) => (
+            <li>{cert}</li>
+          ))}
+        </ul>
+      </section>
+      
+      <section class="section">
+        <h2>Interests</h2>
+        <div class="interests-grid">
+          <div class="interest-category">
+            <h3>Tech</h3>
+            <ul class="interest-list">
+              {interests.tech.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="interest-category">
+            <h3>Hobbies</h3>
+            <ul class="interest-list">
+              {interests.hobbies.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Blog Stats</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>値</th>
+            </tr>
+          </thead>
+          <tbody>
+            {blogStats.map((stat) => (
+              <tr>
+                <td>{stat.label}</td>
+                <td>{stat.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+      
+      <section class="section">
+        <h2>Contact</h2>
+        <p>インターネットで見かけた際はお声かけください。</p>
+      </section>
+    </main>
+    
+    <Footer />
+  </body>
+</html>
