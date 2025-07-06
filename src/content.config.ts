@@ -12,6 +12,7 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: image().optional(),
+		tags: z.array(z.string()).optional().default(['その他']), // オプショナルで、デフォルト値を設定
 	}),
 });
 

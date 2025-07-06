@@ -1,0 +1,59 @@
+---
+// src/pages/blog/tags/[tag].astro
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import { getAllTags } from '../../../utils/blog'; // 新しく作成したユーティリティをインポート
+interface Props {
+  tagName: string;
+}
+export const getStaticPaths: GetStaticPaths = async () => {
+  const tags = await getAllTags();
+  return tags.map((tag) => ({
+    params: { tag: tag },
+    props: { tagName: tag },
+  }));
+};
+
+const { tagName } = Astro.props;
+const allPosts = await getCollection('blog');
+const postsByTag = allPosts.filter(post => post.data.tags?.includes(tagName)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<html lang="ja">
+  <head>
+    <BaseHead title={`${tagName} の記事一覧`} description={`${tagName}に関するブログ記事`} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h2>「{tagName}」に関する記事</h2>
+
+      <section>
+        <ul>
+          {postsByTag.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}/`}>
+                <h3 class="title">{post.data.title}</h3>
+                <FormattedDate date={post.data.pubDate} />
+                <p>{post.data.description}</p>
+                {post.data.tags && (
+                  <div class="tags">
+                    {post.data.tags.map((tag) => (
+                      <a href={`/blog/tags/${tag}/`} class="tag-link">#{tag}</a>
+                    ))}
+                  </div>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>

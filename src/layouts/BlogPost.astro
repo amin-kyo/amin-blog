@@ -8,7 +8,7 @@ import { Image } from 'astro:assets';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage,tags } = Astro.props;
 ---
 
 <html lang="ja">
@@ -52,6 +52,27 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			  .tags {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-link {
+    background-color: var(--color-gray-200); /* 例: 背景色 */
+    color: var(--color-gray-800); /* 例: 文字色 */
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8em;
+    white-space: nowrap;
+  }
+
+  .tag-link:hover {
+    background-color: var(--color-primary); /* 例: ホバー時の背景色 */
+    color: var(--color-white); /* 例: ホバー時の文字色 */
+  }
 		</style>
 	</head>
 
@@ -74,9 +95,18 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 								)
 							}
 						</div>
+						
 						<h1>{title}</h1>
 						<hr />
 					</div>
+					{        
+					tags && (
+          <div class="tags">
+            {tags.map((tag) => (
+              <a href={`/blog/tags/${tag}/`} class="tag-link">#{tag}</a>
+            ))}
+          </div>
+		  )}
 					<slot />
 				</div>
 			</article>
