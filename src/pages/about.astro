@@ -11,8 +11,9 @@ const techStack = {
   production: [
     { name: 'HTML', level: 3, note: 'わりと好き' },
     { name: 'CSS', level: 3, note: '好き' },
-    { name: 'JavaScript', level: 2, note: 'ちょっとだけ' },
+    { name: 'JavaScript', level: 2, note: 'ちょっと' },
     { name: 'kintone', level: 3, note: '業務システム開発' },
+    { name: 'VBA', level: 2, note: '触りたくはない' },
   ],
   learning: [
     { name: 'Astro', level: 2, note: 'このブログで触ってる' },
@@ -42,7 +43,7 @@ const interests = {
 };
 
 const blogStats = [
-  { label: 'コンテンツ', value: 'めも' },
+  { label: 'コンテンツ', value: 'メモ' },
   { label: '環境', value: 'Astro + GitHub + Cloudflare Pages' },
   { label: '執筆環境', value: 'iPad mini + GitHub Web Editor' },
 ];
@@ -153,8 +154,8 @@ const renderStars = (level: number) => {
         <table class="table">
           <thead>
             <tr>
-              <th>項目</th>
-              <th>内容</th>
+              <th>Category</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
@@ -248,8 +249,8 @@ const renderStars = (level: number) => {
         <table class="table">
           <thead>
             <tr>
-              <th>項目</th>
-              <th>値</th>
+              <th>Category</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
@@ -265,7 +266,7 @@ const renderStars = (level: number) => {
       
       <section class="section">
         <h2>Contact</h2>
-        <p>インターネットで見かけた際はお声かけください。</p>
+        <p>適当にお声かけください。</p>
       </section>
     </main>
     
