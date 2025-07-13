@@ -23,7 +23,17 @@ const relatedPosts = allPosts
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-    <BaseHead title={title} description={description} image={heroImage} />
+    <BaseHead 
+      title={title} 
+      description={description} 
+      image={heroImage}
+      article={{
+        publishedTime: publishDate.toISOString(),
+        author: "Amin",
+        tags: tags,
+        type: "BlogPosting"
+      }}
+    />
   </head>
   <body>
     <Header />

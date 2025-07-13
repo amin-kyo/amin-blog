@@ -20,7 +20,15 @@ const sortedPosts = allPosts
 <!doctype html>
 <html lang="ja">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead 
+			title={SITE_TITLE} 
+			description={SITE_DESCRIPTION}
+			webpage={{
+				type: "Blog",
+				name: SITE_TITLE,
+				alternateName: "amimemo"
+			}}
+		/>
 	</head>
 <body>
 	<Header />
