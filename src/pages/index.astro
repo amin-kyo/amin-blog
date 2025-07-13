@@ -3,6 +3,18 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+import ArticleCard from '../components/ArticleCard.astro';
+
+// ブログ記事を取得して公開日順にソート
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts
+  .filter(post => !post.data.draft) // 下書きを除外
+  .sort((a, b) => {
+    const dateA = new Date(a.data.publishDate);
+    const dateB = new Date(b.data.publishDate);
+    return dateB.getTime() - dateA.getTime(); // 新しい順
+  });
 ---
 
 <!doctype html>
@@ -10,14 +22,35 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<body>
-		<Header />
-		<main>
-			<p>
-				hi!
+<body>
+	<Header />
+	<main class="container">
+		<header class="page-header">
+			<h1 class="page-title gradient-text">Latest Blog Posts</h1>
+			<p class="text-lg text-secondary">
+				最近暑いね
 			</p>
+		</header>
 
-		</main>
-		<Footer />
-	</body>
+		<section class="mb-2xl">
+			{sortedPosts.length === 0 ? (
+				<div class="card card-padding text-center">
+					<p class="text-lg text-secondary">まだ記事がありません。もうしばらくお待ちください。</p>
+				</div>
+			) : (
+				<div class="grid grid-auto-fit">
+					{sortedPosts.map(post => (
+						<ArticleCard
+							title={post.data.title}
+							publishDate={post.data.publishDate}
+							tags={post.data.tags || []}
+							slug={post.id}
+						/>
+					))}
+				</div>
+			)}
+		</section>
+	</main>
+	<Footer />
+</body>
 </html>

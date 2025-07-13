@@ -1,0 +1,145 @@
+---
+// src/pages/blog/archive/[month].astro
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+
+interface Props {
+  month: string;
+  year: number;
+  monthNumber: number;
+  posts: any[];
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allPosts = await getCollection('blog');
+  const filteredPosts = allPosts.filter(post => !post.data.draft);
+  
+  // 月別にグループ化
+  const monthlyPosts = filteredPosts.reduce((acc, post) => {
+    const date = new Date(post.data.publishDate);
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    
+    if (!acc[monthKey]) {
+      acc[monthKey] = {
+        year: date.getFullYear(),
+        monthNumber: date.getMonth() + 1,
+        posts: []
+      };
+    }
+    acc[monthKey].posts.push(post);
+    return acc;
+  }, {} as Record<string, { year: number; monthNumber: number; posts: any[] }>);
+
+  // 各月のパスを生成
+  return Object.entries(monthlyPosts).map(([monthKey, data]) => ({
+    params: { month: monthKey },
+    props: {
+      month: monthKey,
+      year: data.year,
+      monthNumber: data.monthNumber,
+      posts: data.posts.sort((a, b) => {
+        const dateA = new Date(a.data.publishDate);
+        const dateB = new Date(b.data.publishDate);
+        return dateB.getTime() - dateA.getTime(); // 新しい順
+      })
+    }
+  }));
+};
+
+const { month, year, monthNumber, posts } = Astro.props;
+
+// 月名の配列（日本語）
+const monthNames = [
+  '1月', '2月', '3月', '4月', '5月', '6月',
+  '7月', '8月', '9月', '10月', '11月', '12月'
+];
+
+const monthName = monthNames[monthNumber - 1];
+const pageTitle = `${year}年${monthName}の記事一覧`;
+const pageDescription = `${year}年${monthName}に公開された記事の一覧です。`;
+
+// 前後の月を計算（ナビゲーション用）
+const prevMonth = new Date(year, monthNumber - 2, 1);
+const nextMonth = new Date(year, monthNumber, 1);
+const today = new Date();
+
+const prevMonthKey = `${prevMonth.getFullYear()}-${String(prevMonth.getMonth() + 1).padStart(2, '0')}`;
+const nextMonthKey = `${nextMonth.getFullYear()}-${String(nextMonth.getMonth() + 1).padStart(2, '0')}`;
+
+// 次の月が未来の場合は表示しない
+const showNextMonth = nextMonth <= today;
+---
+
+<html lang="ja">
+<head>
+  <BaseHead title={pageTitle} description={pageDescription} />
+</head>
+<body>
+  <Header />
+  <main class="container">
+    <header class="archive-header">
+      <div class="archive-title-wrapper">
+        <h1 class="archive-title">
+          <span class="month-year">{year}</span>
+          <span class="month-name">{monthName}</span>
+        </h1>
+        <p class="archive-description">
+          {posts.length}件の記事が公開されました
+        </p>
+      </div>
+      
+      <div class="archive-stats">
+        <span class="archive-count">{posts.length}記事</span>
+      </div>
+    </header>
+
+    <!-- 月間ナビゲーション -->
+    <nav class="month-navigation">
+      <a href={`/blog/archive/${prevMonthKey}`} class="month-nav-button">
+        ← {prevMonth.getFullYear()}年{monthNames[prevMonth.getMonth()]}
+      </a>
+      
+      <a href="/blog" class="month-nav-button month-nav-home">
+        記事一覧へ
+      </a>
+      
+      {showNextMonth && (
+        <a href={`/blog/archive/${nextMonthKey}`} class="month-nav-button">
+          {nextMonth.getFullYear()}年{monthNames[nextMonth.getMonth()]} →
+        </a>
+      )}
+    </nav>
+
+    <section class="articles-section">
+      {posts.length === 0 ? (
+        <div class="no-articles">
+          <p class="no-articles-message">{year}年{monthName}の記事はありません。</p>
+        </div>
+      ) : (
+        <div class="articles-grid">
+          {posts.map(post => (
+            <ArticleCard
+              title={post.data.title}
+              publishDate={post.data.publishDate}
+              tags={post.data.tags || []}
+              slug={post.id}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+
+    <!-- 他の月へのリンク -->
+    <nav class="bottom-navigation">
+      <a href="/blog" class="back-link">
+        <span>全記事一覧に戻る</span>
+      </a>
+    </nav>
+  </main>
+  <Footer />
+</body>
+</html>

@@ -5,11 +5,13 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import FormattedDate from '../../../components/FormattedDate.astro';
-import { getAllTags } from '../../../utils/blog'; // 新しく作成したユーティリティをインポート
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { getAllTags } from '../../../utils/blog';
+
 interface Props {
   tagName: string;
 }
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const tags = await getAllTags();
   return tags.map((tag) => ({
@@ -20,40 +22,75 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const { tagName } = Astro.props;
 const allPosts = await getCollection('blog');
-const postsByTag = allPosts.filter(post => post.data.tags?.includes(tagName)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
----
-<html lang="ja">
-  <head>
-    <BaseHead title={`${tagName} の記事一覧`} description={`${tagName}に関するブログ記事`} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <h2>「{tagName}」に関する記事</h2>
+const postsByTag = allPosts
+  .filter(post => post.data.tags?.includes(tagName))
+  .sort((a, b) => {
+    const dateA = new Date(a.data.publishDate);
+    const dateB = new Date(b.data.publishDate);
+    return dateB.getTime() - dateA.getTime(); // 新しい順
+  });
 
-      <section>
-        <ul>
-          {postsByTag.map((post) => (
-            <li>
-              <a href={`/blog/${post.id}/`}>
-                <h3 class="title">{post.data.title}</h3>
-                <FormattedDate date={post.data.pubDate} />
-                <p>{post.data.description}</p>
-                {post.data.tags && (
-                  <div class="tags">
-                    {post.data.tags.map((tag) => (
-                      <a href={`/blog/tags/${tag}/`} class="tag-link">#{tag}</a>
-                    ))}
-                  </div>
-                )}
-              </a>
-            </li>
+const pageTitle = `${tagName} の記事一覧`;
+const pageDescription = `${tagName}に関するブログ記事の一覧です。`;
+---
+
+<html lang="ja">
+<head>
+  <BaseHead title={pageTitle} description={pageDescription} />
+</head>
+<body>
+  <Header />
+  <main class="container">
+    <header class="archive-header">
+      <div class="archive-title-wrapper">
+        <h1 class="archive-title">
+          <span class="tag-symbol">#</span>
+          <span class="tag-title">{tagName}</span>
+        </h1>
+        <p class="archive-description">
+          「{tagName}」に関する記事一覧
+        </p>
+      </div>
+      
+      <div class="archive-stats">
+        <span class="archive-count">{postsByTag.length}件の記事</span>
+      </div>
+    </header>
+
+    <nav class="archive-navigation">
+      <a href="/blog" class="nav-button nav-home">
+        <span>記事一覧へ</span>
+      </a>
+    </nav>
+
+    <section class="articles-section">
+      {postsByTag.length === 0 ? (
+        <div class="no-articles">
+          <p class="no-articles-message">「{tagName}」に関する記事はまだありません。</p>
+          <a href="/" class="no-articles-link">
+            <span>トップページに戻る</span>
+          </a>
+        </div>
+      ) : (
+        <div class="articles-grid">
+          {postsByTag.map(post => (
+            <ArticleCard
+              title={post.data.title}
+              publishDate={post.data.publishDate}
+              tags={post.data.tags || []}
+              slug={post.id}
+            />
           ))}
-        </ul>
-      </section>
-    </main>
-    <Footer />
-  </body>
+        </div>
+      )}
+    </section>
+
+    <nav class="bottom-navigation">
+      <a href="/blog" class="back-link">
+        <span>全記事一覧に戻る</span>
+      </a>
+    </nav>
+  </main>
+  <Footer />
+</body>
 </html>

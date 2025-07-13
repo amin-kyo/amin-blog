@@ -1,0 +1,446 @@
+/* ===========================================
+   About Page - Aboutページ専用スタイル
+   =========================================== */
+
+/* ===== プロフィールグリッド ===== */
+.profile-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.profile-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--gray-50);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-500);
+  transition: var(--transition-all);
+}
+
+.profile-item:hover {
+  background: var(--color-white);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.profile-label {
+  font-weight: var(--font-bold);
+  color: var(--gray-900);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile-value {
+  color: var(--gray-600);
+  line-height: var(--leading-relaxed);
+}
+
+/* ===== 技術スタックセクション ===== */
+.tech-section {
+  margin-bottom: var(--space-12);
+}
+
+.tech-section:last-child {
+  margin-bottom: 0;
+}
+
+.tech-category {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--primary-500);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--gradient-light);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-500);
+  position: relative;
+}
+
+.tech-category::after {
+  content: '';
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--primary-500);
+  border-radius: 50%;
+}
+
+.tech-item {
+  background: var(--gray-50);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  transition: var(--transition-all);
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: var(--transition-all);
+}
+
+.tech-item:hover {
+  border-color: var(--primary-300);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-white);
+}
+
+.tech-item:hover::before {
+  transform: scaleX(1);
+}
+
+.tech-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.tech-name {
+  font-weight: var(--font-bold);
+  color: var(--gray-900);
+  font-size: var(--text-base);
+}
+
+.tech-stars {
+  color: var(--primary-500);
+  font-size: var(--text-sm);
+}
+
+.tech-note {
+  font-size: var(--text-sm);
+  color: var(--gray-600);
+  font-style: italic;
+}
+
+/* ===== 資格・スキル ===== */
+.cert-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-all);
+  position: relative;
+  overflow: hidden;
+}
+
+.cert-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: var(--transition-slow);
+}
+
+.cert-item:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-primary);
+}
+
+.cert-item:hover::before {
+  left: 100%;
+}
+
+.cert-icon {
+  font-size: var(--text-xl);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.cert-name {
+  font-weight: var(--font-medium);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* ===== 興味・趣味セクション ===== */
+.interest-category {
+  background: var(--gray-50);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-200);
+  transition: var(--transition-all);
+  position: relative;
+}
+
+.interest-category:hover {
+  background: var(--color-white);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.interest-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  text-align: center;
+  margin-bottom: var(--space-6);
+  color: var(--gray-900);
+  position: relative;
+}
+
+.interest-title::after {
+  content: '';
+  position: absolute;
+  bottom: -var(--space-2);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+}
+
+.interest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.interest-tag {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  transition: var(--transition-all);
+  cursor: default;
+  position: relative;
+}
+
+.tech-tag {
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-primary);
+}
+
+.tech-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.hobby-tag {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: var(--color-white);
+  box-shadow: 0 4px 16px rgba(240, 147, 251, 0.3);
+}
+
+.hobby-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+}
+
+/* ===== ブログ統計 ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.blog-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-4);
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-all);
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: var(--transition-slow);
+}
+
+.blog-stat-item:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-primary);
+}
+
+.blog-stat-item:hover::before {
+  transform: translateX(100%);
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  opacity: 0.9;
+  margin-bottom: var(--space-1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* ===== コンタクトセクション ===== */
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-medium);
+  transition: var(--transition-all);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: var(--transition-all);
+}
+
+.contact-link.mastodon {
+  background: #6364ff;
+  color: var(--color-white);
+  box-shadow: 0 4px 16px rgba(99, 100, 255, 0.3);
+}
+
+.contact-link.mastodon::before {
+  background: linear-gradient(45deg, #6364ff, #8b5cf6);
+}
+
+.contact-link.github {
+  background: var(--gray-800);
+  color: var(--color-white);
+  box-shadow: 0 4px 16px rgba(31, 41, 55, 0.3);
+}
+
+.contact-link.github::before {
+  background: linear-gradient(45deg, #374151, #1f2937);
+}
+
+.contact-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.contact-link:hover::before {
+  opacity: 1;
+}
+
+.contact-icon {
+  font-size: var(--text-lg);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+
+/* ===== レスポンシブ調整 ===== */
+@media (max-width: 1024px) {
+  .interest-category {
+    padding: var(--space-4);
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-item {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    text-align: center;
+  }
+
+  .profile-label {
+    font-size: var(--text-xs);
+    border-bottom: 1px solid var(--gray-300);
+    padding-bottom: var(--space-1);
+  }
+
+  .tech-category {
+    font-size: var(--text-lg);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .tech-item {
+    padding: var(--space-3);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-link {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tech-category {
+    font-size: var(--text-base);
+  }
+
+  .interest-category {
+    padding: var(--space-3);
+  }
+
+  .interest-title {
+    font-size: var(--text-base);
+  }
+
+  .cert-item {
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .cert-icon {
+    font-size: var(--text-base);
+  }
+
+  .blog-stat-item {
+    padding: var(--space-3);
+  }
+}

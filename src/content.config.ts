@@ -9,10 +9,11 @@ const blog = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		// Transform string to Date object
-		pubDate: z.coerce.date(),
+		publishDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: image().optional(),
 		tags: z.array(z.string()).optional().default(['その他']), // オプショナルで、デフォルト値を設定
+		draft: z.boolean().optional().default(false), // 下書き機能
 	}),
 });
 

@@ -1,0 +1,228 @@
+/* ===========================================
+   Layouts - レイアウトコンポーネント専用スタイル
+   =========================================== */
+
+/* ===== Header.astro 専用スタイル ===== */
+.site-header {
+  margin: 0;
+  padding: 0 var(--space-4);
+  background: var(--color-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.site-header h2 {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+}
+
+.site-header h2 a,
+.site-header h2 a.active {
+  text-decoration: none;
+  color: var(--gray-900);
+  transition: var(--transition-all);
+}
+
+.site-header h2 a:hover {
+  color: var(--primary-500);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+}
+
+.site-nav a {
+  padding: var(--space-4) var(--space-2);
+  color: var(--gray-700);
+  border-bottom: 3px solid transparent;
+  text-decoration: none;
+  font-weight: var(--font-medium);
+  transition: var(--transition-all);
+  position: relative;
+}
+
+.site-nav a:hover {
+  color: var(--primary-500);
+  border-bottom-color: var(--primary-200);
+}
+
+.site-nav a.active {
+  color: var(--primary-500);
+  border-bottom-color: var(--primary-500);
+  font-weight: var(--font-semibold);
+}
+
+.internal-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  color: var(--gray-600);
+  transition: var(--transition-all);
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+}
+
+.social-links a:hover {
+  color: var(--primary-500);
+  background: var(--primary-50);
+  transform: translateY(-1px);
+}
+
+.social-links svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===== Footer.astro 専用スタイル ===== */
+.site-footer {
+  padding: var(--space-12) var(--space-4) var(--space-16) var(--space-4);
+  background: var(--gradient-bg);
+  color: var(--gray-600);
+  text-align: center;
+  border-top: 1px solid var(--gray-200);
+  margin-top: var(--space-16);
+}
+
+.footer-content {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+.footer-social-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.footer-social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  text-decoration: none;
+  color: var(--gray-600);
+  background: var(--color-white);
+  border-radius: var(--radius-full);
+  transition: var(--transition-all);
+  box-shadow: var(--shadow-sm);
+}
+
+.footer-social-links a:hover {
+  color: var(--primary-500);
+  background: var(--primary-50);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.footer-social-links svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ===== HeaderLink.astro 専用スタイル ===== */
+.header-link {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+  transition: var(--transition-all);
+}
+
+.header-link:hover {
+  color: var(--primary-500);
+}
+
+.header-link.active {
+  font-weight: var(--font-semibold);
+  color: var(--primary-500);
+}
+
+/* ===== FormattedDate.astro 専用スタイル ===== */
+.formatted-date {
+  font-size: var(--text-sm);
+  color: var(--gray-500);
+  font-weight: var(--font-medium);
+}
+
+/* ===== レスポンシブ調整 ===== */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 0 var(--space-3);
+  }
+
+  .site-nav {
+    min-height: 56px;
+  }
+
+  .site-nav a {
+    padding: var(--space-3) var(--space-1);
+    font-size: var(--text-sm);
+  }
+
+  .social-links {
+    display: none;
+  }
+
+  .internal-links {
+    gap: var(--space-1);
+  }
+
+  .site-footer {
+    padding: var(--space-8) var(--space-3) var(--space-12) var(--space-3);
+  }
+
+  .footer-social-links a {
+    width: 40px;
+    height: 40px;
+  }
+
+  .footer-social-links svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header h2 {
+    font-size: var(--text-sm);
+  }
+
+  .site-nav a {
+    padding: var(--space-2) var(--space-1);
+    font-size: var(--text-xs);
+  }
+
+  .footer-social-links {
+    gap: var(--space-2);
+  }
+
+  .footer-social-links a {
+    width: 36px;
+    height: 36px;
+  }
+
+  .footer-social-links svg {
+    width: 18px;
+    height: 18px;
+  }
+}

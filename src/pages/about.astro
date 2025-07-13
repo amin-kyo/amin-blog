@@ -57,216 +57,139 @@ const renderStars = (level: number) => {
 <html lang="ja">
   <head>
     <BaseHead title={pageTitle} description={pageDescription} />
-    <style>
-
-
-      .section h2 {
-        border-bottom: 2px solid #333;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1.5rem;
-      }
-      
-      .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1.5rem;
-      }
-      
-      .table th,
-      .table td {
-        border: 1px solid #ddd;
-        padding: 0.75rem;
-        text-align: left;
-      }
-      
-      .table th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-      }
-      
-      .table tr:nth-child(even) {
-        background-color: #f8f9fa;
-      }
-      
-      .interests-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-      }
-      
-      .interest-category h3 {
-        margin-bottom: 0.5rem;
-        color: #333;
-      }
-      
-      .interest-list {
-        list-style: none;
-        padding: 0;
-      }
-      
-      .interest-list li {
-        padding: 0.25rem 0;
-        border-bottom: 1px solid #eee;
-      }
-      
-      .interest-list li:last-child {
-        border-bottom: none;
-      }
-      
-      .cert-list {
-        list-style: none;
-        padding: 0;
-      }
-      
-      .cert-list li {
-        padding: 0.5rem 0;
-        border-left: 3px solid var(--accent);
-        padding-left: 1rem;
-        margin-bottom: 0.5rem;
-      }
-      
-      @media (max-width: 640px) {
-        .about-container {
-          padding: 1rem;
-        }
-        
-        .table {
-          font-size: 0.9rem;
-        }
-        
-        .interests-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
   </head>
   <body>
     <Header />
     
-    <main class="about-container">    
-      <section class="section">
-        <h2>Overview</h2>
-        <p>あみんのメモ、あみめもです。</p>
+    <main class="container">
+      <!-- ヒーロー -->
+      <header class="hero-header mb-2xl">
+        <h1 class="page-title">About Me</h1>
+        <p class="text-xl">
+          アウトドアなインドア
+        </p>
+      </header>
+
+      <!-- Overview セクション -->
+      <section class="card card-padding-lg mb-xl">
+        <h2 class="section-title">Overview</h2>
+        <div class="overview-content">
+          <p class="text-lg text-secondary mb-md">あみんのメモ、あみめもです。</p>
+        </div>
       </section>
       
-      <section class="section">
-        <h2>Profile</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {profileData.map((item) => (
-              <tr>
-                <td>{item.label}</td>
-                <td>{item.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-      
-      <section class="section">
-        <h2>Tech Stack</h2>
-        
-        <h3>Production</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Technology</th>
-              <th>Level</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            {techStack.production.map((tech) => (
-              <tr>
-                <td>{tech.name}</td>
-                <td>{renderStars(tech.level)}</td>
-                <td>{tech.note}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        
-        <h3>Learning</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Technology</th>
-              <th>Level</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            {techStack.learning.map((tech) => (
-              <tr>
-                <td>{tech.name}</td>
-                <td>{renderStars(tech.level)}</td>
-                <td>{tech.note}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-      
-      <section class="section">
-        <h2>Skills</h2>
-        <ul class="cert-list">
-          {certifications.map((cert) => (
-            <li>{cert}</li>
+      <!-- Profile セクション -->
+      <section class="card card-padding-lg mb-xl">
+        <h2 class="section-title">Profile</h2>
+        <div class="profile-grid">
+          {profileData.map((item) => (
+            <div class="profile-item">
+              <dt class="profile-label font-bold">{item.label}</dt>
+              <dd class="profile-value text-secondary">{item.value}</dd>
+            </div>
           ))}
-        </ul>
+        </div>
       </section>
       
-      <section class="section">
-        <h2>Interests</h2>
-        <div class="interests-grid">
-          <div class="interest-category">
-            <h3>Tech</h3>
-            <ul class="interest-list">
-              {interests.tech.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
+      <!-- Tech Stack セクション -->
+      <section class="card card-padding-lg mb-xl">
+        <h2 class="section-title">Tech Stack</h2>
+        
+        <div class="tech-section mb-xl">
+          <h3 class="tech-category">Production</h3>
+          <div class="grid grid-auto-fit-sm gap-md">
+            {techStack.production.map((tech) => (
+              <div class="tech-item">
+                <div class="tech-header">
+                  <span class="tech-name">{tech.name}</span>
+                  <span class="tech-stars">{renderStars(tech.level)}</span>
+                </div>
+                <span class="tech-note">{tech.note}</span>
+              </div>
+            ))}
           </div>
-          <div class="interest-category">
-            <h3>Hobbies</h3>
-            <ul class="interest-list">
-              {interests.hobbies.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
+        </div>
+        
+        <div class="tech-section">
+          <h3 class="tech-category">Learning</h3>
+          <div class="grid grid-auto-fit-sm gap-md">
+            {techStack.learning.map((tech) => (
+              <div class="tech-item">
+                <div class="tech-header">
+                  <span class="tech-name">{tech.name}</span>
+                  <span class="tech-stars">{renderStars(tech.level)}</span>
+                </div>
+                <span class="tech-note">{tech.note}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
       
-      <section class="section">
-        <h2>Blog Stats</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {blogStats.map((stat) => (
-              <tr>
-                <td>{stat.label}</td>
-                <td>{stat.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <!-- Skills セクション -->
+      <section class="card card-padding-lg mb-xl">
+        <h2 class="section-title">Skills & Certifications</h2>
+        <div class="grid grid-auto-fit-sm gap-md">
+          {certifications.map((cert) => (
+            <div class="cert-item">
+              <span class="cert-icon">🏆</span>
+              <span class="cert-name">{cert}</span>
+            </div>
+          ))}
+        </div>
       </section>
       
-      <section class="section">
-        <h2>Contact</h2>
-        <p>適当にお声かけください。</p>
+      <!-- Interests セクション -->
+      <section class="card card-padding-lg mb-xl">
+        <h2 class="section-title">Interests</h2>
+        <div class="grid grid-auto-fit gap-xl">
+          <div class="interest-category">
+            <h3 class="interest-title">Tech</h3>
+            <div class="interest-tags">
+              {interests.tech.map((item) => (
+                <span class="interest-tag tech-tag">{item}</span>
+              ))}
+            </div>
+          </div>
+          <div class="interest-category">
+            <h3 class="interest-title">Hobbies</h3>
+            <div class="interest-tags">
+              {interests.hobbies.map((item) => (
+                <span class="interest-tag hobby-tag">{item}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Blog Stats セクション -->
+      <section class="card card-padding-lg mb-xl">
+        <h2 class="section-title">Blog Stats</h2>
+        <div class="stats-grid">
+          {blogStats.map((stat) => (
+            <div class="blog-stat-item">
+              <dt class="stat-label">{stat.label}</dt>
+              <dd class="stat-value">{stat.value}</dd>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Contact セクション -->
+      <section class="card card-padding-lg">
+        <h2 class="section-title">Contact</h2>
+        <div class="text-center">
+          <div class="contact-links">
+            <a href="https://mstdn.jp/@amin" target="_blank" class="contact-link mastodon">
+              <span class="contact-icon">🐘</span>
+              Mastodon
+            </a>
+            <a href="https://github.com/amin-kyo" target="_blank" class="contact-link github">
+              <span class="contact-icon">🐙</span>
+              GitHub
+            </a>
+          </div>
+        </div>
       </section>
     </main>
     

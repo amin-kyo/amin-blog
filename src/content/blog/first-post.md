@@ -1,7 +1,7 @@
 ---
 title: 'First post'
 description: 'First post'
-pubDate: 'Jul 07 2025'
+publishDate: 'Jul 07 2025'
 heroImage: '../../assets/images/2025-07-05-trek-checkpoint.JPG'
 tags: ["bicycle", "checkpoint"]
 ---
