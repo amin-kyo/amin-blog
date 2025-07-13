@@ -63,23 +63,20 @@ const renderStars = (level: number) => {
     
     <main class="container">
       <!-- ヒーロー -->
-      <header class="hero-header mb-2xl">
-        <h1 class="page-title">About Me</h1>
-        <p class="text-xl">
-          アウトドアなインドア
-        </p>
+      <header class="hero-header mb-12">
+        <h1 class="page-title">About</h1>
       </header>
 
       <!-- Overview セクション -->
-      <section class="card card-padding-lg mb-xl">
+      <section class="card card-padding-lg mb-8">
         <h2 class="section-title">Overview</h2>
         <div class="overview-content">
-          <p class="text-lg text-secondary mb-md">あみんのメモ、あみめもです。</p>
+          <p class="text-lg text-secondary mb-4">あみんのメモ、あみめもです。</p>
         </div>
       </section>
       
       <!-- Profile セクション -->
-      <section class="card card-padding-lg mb-xl">
+      <section class="card card-padding-lg mb-8">
         <h2 class="section-title">Profile</h2>
         <div class="profile-grid">
           {profileData.map((item) => (
@@ -92,12 +89,12 @@ const renderStars = (level: number) => {
       </section>
       
       <!-- Tech Stack セクション -->
-      <section class="card card-padding-lg mb-xl">
+      <section class="card card-padding-lg mb-8">
         <h2 class="section-title">Tech Stack</h2>
         
-        <div class="tech-section mb-xl">
+        <div class="tech-section mb-8">
           <h3 class="tech-category">Production</h3>
-          <div class="grid grid-auto-fit-sm gap-md">
+          <div class="grid grid-auto-fit-sm gap-4">
             {techStack.production.map((tech) => (
               <div class="tech-item">
                 <div class="tech-header">
@@ -112,7 +109,7 @@ const renderStars = (level: number) => {
         
         <div class="tech-section">
           <h3 class="tech-category">Learning</h3>
-          <div class="grid grid-auto-fit-sm gap-md">
+          <div class="grid grid-auto-fit-sm gap-4">
             {techStack.learning.map((tech) => (
               <div class="tech-item">
                 <div class="tech-header">
@@ -127,9 +124,9 @@ const renderStars = (level: number) => {
       </section>
       
       <!-- Skills セクション -->
-      <section class="card card-padding-lg mb-xl">
+      <section class="card card-padding-lg mb-8">
         <h2 class="section-title">Skills & Certifications</h2>
-        <div class="grid grid-auto-fit-sm gap-md">
+        <div class="grid grid-auto-fit-sm gap-4">
           {certifications.map((cert) => (
             <div class="cert-item">
               <span class="cert-icon">🏆</span>
@@ -140,9 +137,9 @@ const renderStars = (level: number) => {
       </section>
       
       <!-- Interests セクション -->
-      <section class="card card-padding-lg mb-xl">
+      <section class="card card-padding-lg mb-8">
         <h2 class="section-title">Interests</h2>
-        <div class="grid grid-auto-fit gap-xl">
+        <div class="grid grid-auto-fit gap-8">
           <div class="interest-category">
             <h3 class="interest-title">Tech</h3>
             <div class="interest-tags">
@@ -163,7 +160,7 @@ const renderStars = (level: number) => {
       </section>
       
       <!-- Blog Stats セクション -->
-      <section class="card card-padding-lg mb-xl">
+      <section class="card card-padding-lg mb-8">
         <h2 class="section-title">Blog Stats</h2>
         <div class="stats-grid">
           {blogStats.map((stat) => (

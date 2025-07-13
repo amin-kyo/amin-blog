@@ -1,0 +1,270 @@
+---
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  prevUrl?: string;
+  nextUrl?: string;
+}
+
+const { currentPage, totalPages, baseUrl, prevUrl, nextUrl } = Astro.props;
+
+// ページ番号のリストを生成（最大7個表示）
+function generatePageNumbers(current: number, total: number): (number | 'ellipsis')[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const pages: (number | 'ellipsis')[] = [];
+  
+  // 最初のページは常に表示
+  pages.push(1);
+  
+  if (current <= 4) {
+    // 前半部分
+    for (let i = 2; i <= Math.min(5, total - 1); i++) {
+      pages.push(i);
+    }
+    if (total > 5) {
+      pages.push('ellipsis');
+    }
+  } else if (current >= total - 3) {
+    // 後半部分
+    if (total > 5) {
+      pages.push('ellipsis');
+    }
+    for (let i = Math.max(total - 4, 2); i <= total - 1; i++) {
+      pages.push(i);
+    }
+  } else {
+    // 中間部分
+    pages.push('ellipsis');
+    for (let i = current - 1; i <= current + 1; i++) {
+      pages.push(i);
+    }
+    pages.push('ellipsis');
+  }
+  
+  // 最後のページは常に表示
+  if (total > 1) {
+    pages.push(total);
+  }
+  
+  return pages;
+}
+
+const pageNumbers = generatePageNumbers(currentPage, totalPages);
+
+// URLを生成する関数
+function getPageUrl(page: number): string {
+  if (page === 1) {
+    return baseUrl;
+  }
+  return `${baseUrl}/${page}`;
+}
+---
+
+{totalPages > 1 && (
+  <nav class="pagination" aria-label="ページネーション">
+    <div class="pagination-container">
+      <!-- 前のページ -->
+      {prevUrl ? (
+        <a href={prevUrl} class="pagination-btn pagination-prev" rel="prev" aria-label="前のページ">
+          <span aria-hidden="true">←</span>
+          <span class="pagination-text">前へ</span>
+        </a>
+      ) : (
+        <span class="pagination-btn pagination-prev pagination-disabled" aria-hidden="true">
+          <span aria-hidden="true">←</span>
+          <span class="pagination-text">前へ</span>
+        </span>
+      )}
+
+      <!-- ページ番号 -->
+      <div class="pagination-numbers">
+        {pageNumbers.map((page) => (
+          page === 'ellipsis' ? (
+            <span class="pagination-ellipsis" aria-hidden="true">...</span>
+          ) : page === currentPage ? (
+            <span class="pagination-number pagination-current" aria-current="page" aria-label={`現在のページ: ${page}`}>
+              {page}
+            </span>
+          ) : (
+            <a href={getPageUrl(page)} class="pagination-number" aria-label={`ページ ${page} へ移動`}>
+              {page}
+            </a>
+          )
+        ))}
+      </div>
+
+      <!-- 次のページ -->
+      {nextUrl ? (
+        <a href={nextUrl} class="pagination-btn pagination-next" rel="next" aria-label="次のページ">
+          <span class="pagination-text">次へ</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      ) : (
+        <span class="pagination-btn pagination-next pagination-disabled" aria-hidden="true">
+          <span class="pagination-text">次へ</span>
+          <span aria-hidden="true">→</span>
+        </span>
+      )}
+    </div>
+
+    <!-- ページ情報 -->
+    <div class="pagination-info">
+      <span class="sr-only">ページ情報: </span>
+      <span aria-live="polite">
+        {currentPage} / {totalPages} ページ
+      </span>
+    </div>
+  </nav>
+)}
+
+<style>
+  .pagination {
+    margin: var(--space-24) 0;
+  }
+
+  .pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-6);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    color: var(--gray-900);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition: all var(--transition-base);
+    min-width: 80px;
+    justify-content: center;
+  }
+
+  .pagination-btn:hover:not(.pagination-disabled) {
+    background: var(--gray-50);
+    border-color: var(--primary-500);
+    transform: translateY(-1px);
+  }
+
+  .pagination-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .pagination-numbers {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .pagination-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    color: var(--gray-900);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition: all var(--transition-base);
+  }
+
+  .pagination-number:hover {
+    background: var(--gray-50);
+    border-color: var(--primary-500);
+    transform: translateY(-1px);
+  }
+
+  .pagination-current {
+    background: var(--primary-500);
+    color: var(--color-white);
+    border-color: var(--primary-500);
+    cursor: default;
+  }
+
+  .pagination-ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--gray-600);
+    font-weight: bold;
+  }
+
+  .pagination-info {
+    text-align: center;
+    color: var(--gray-600);
+    font-size: var(--text-sm);
+  }
+
+  .pagination-text {
+    display: none;
+  }
+
+  /* モバイル対応 */
+  @media (max-width: 640px) {
+    .pagination-numbers {
+      gap: var(--space-2);
+    }
+
+    .pagination-number,
+    .pagination-ellipsis {
+      width: 32px;
+      height: 32px;
+      font-size: var(--text-xs);
+    }
+
+    .pagination-btn {
+      min-width: 60px;
+      padding: var(--space-2) var(--space-4);
+      font-size: var(--text-xs);
+    }
+  }
+
+  /* デスクトップでテキスト表示 */
+  @media (min-width: 768px) {
+    .pagination-text {
+      display: inline;
+    }
+  }
+
+  /* フォーカス対応 */
+  .pagination-btn:focus,
+  .pagination-number:focus {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .pagination-btn,
+    .pagination-number {
+      border-color: var(--gray-700);
+      background: var(--gray-800);
+      color: var(--gray-50);
+    }
+
+    .pagination-btn:hover:not(.pagination-disabled),
+    .pagination-number:hover {
+      background: var(--gray-700);
+      border-color: var(--primary-400);
+    }
+  }
+</style>

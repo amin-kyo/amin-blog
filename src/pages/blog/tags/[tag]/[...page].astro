@@ -1,0 +1,245 @@
+---
+import BaseHead from '../../../../components/BaseHead.astro';
+import Header from '../../../../components/Header.astro';
+import Footer from '../../../../components/Footer.astro';
+import ArticleCard from '../../../../components/ArticleCard.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import { SITE_TITLE } from '../../../../consts';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection('blog');
+  const publishedPosts = allPosts.filter(post => !post.data.draft);
+
+  // 全てのタグを取得
+  const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags || []))];
+
+  // 各タグごとにページネーションを生成
+  return allTags.flatMap(tag => {
+    const tagPosts = publishedPosts
+      .filter(post => post.data.tags?.includes(tag))
+      .sort((a, b) => {
+        const dateA = new Date(a.data.publishDate);
+        const dateB = new Date(b.data.publishDate);
+        return dateB.getTime() - dateA.getTime();
+      });
+
+    return paginate(tagPosts, {
+      params: { tag },
+      pageSize: 6,
+    });
+  });
+}
+
+const { page } = Astro.props;
+const { tag } = Astro.params;
+const currentPage = page.currentPage;
+const totalPages = page.lastPage;
+
+// ページタイトルとメタディスクリプション
+const pageTitle = currentPage === 1 
+  ? `「${tag}」の記事一覧 | ${SITE_TITLE}`
+  : `「${tag}」の記事一覧 (${currentPage}ページ目) | ${SITE_TITLE}`;
+
+const pageDescription = currentPage === 1
+  ? `「${tag}」タグが付いた記事の一覧ページです。関連する記事をまとめてご覧いただけます。`
+  : `「${tag}」タグが付いた記事の一覧ページ ${currentPage}ページ目です。`;
+
+// SEO用のcanonical URL
+const canonicalUrl = currentPage === 1 ? `/blog/tags/${tag}` : `/blog/tags/${tag}/${currentPage}`;
+
+// ページネーション用URL
+const baseUrl = `/blog/tags/${tag}`;
+const prevUrl = page.url.prev;
+const nextUrl = page.url.next;
+
+// 全記事から同じタグの記事数を取得
+const allPosts = await getCollection('blog');
+const totalTagPosts = allPosts
+  .filter(post => !post.data.draft && post.data.tags?.includes(tag))
+  .length;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <BaseHead 
+      title={pageTitle} 
+      description={pageDescription}
+    />
+    <!-- Canonical URL -->
+    <link rel="canonical" href={new URL(canonicalUrl, Astro.site)} />
+    
+    <!-- SEO用のprev/next -->
+    {prevUrl && <link rel="prev" href={new URL(prevUrl, Astro.site)} />}
+    {nextUrl && <link rel="next" href={new URL(nextUrl, Astro.site)} />}
+    
+    <!-- Open Graph for pagination -->
+    <meta property="og:type" content="website" />
+    {currentPage > 1 && <meta name="robots" content="noindex, follow" />}
+  </head>
+  <body>
+    <Header />
+    
+    <main class="container">
+      <!-- ページヘッダー -->
+      <header class="page-header">
+        <h1 class="page-title gradient-text">
+          「{tag}」の記事一覧
+          {currentPage > 1 && <span class="page-number">({currentPage}ページ目)</span>}
+        </h1>
+        <p class="text-lg text-secondary">
+          {currentPage === 1 
+            ? `「${tag}」タグが付いた記事をお楽しみください。`
+            : `全${totalTagPosts}件の記事から${page.start + 1}〜${page.end}件目を表示しています。`
+          }
+        </p>
+      </header>
+
+      <!-- タグ情報 -->
+      <div class="tag-info card card-padding mb-8">
+        <div class="flex-between flex-wrap gap-4">
+          <div class="tag-meta">
+            <span class="tag tag-primary tag-lg">#{tag}</span>
+            <span class="text-secondary ml-4">{totalTagPosts}件の記事</span>
+          </div>
+          <a href="/blog/tags" class="btn btn-outline btn-sm">
+            他のタグを見る
+          </a>
+        </div>
+      </div>
+
+      <!-- 記事一覧 -->
+      <section class="mb-12">
+        {page.data.length === 0 ? (
+          <div class="card card-padding text-center">
+            <p class="text-lg text-secondary mb-4">
+              「{tag}」タグの記事が見つかりませんでした。
+            </p>
+            <div class="flex justify-center gap-4">
+              <a href="/blog" class="btn btn-primary">最新記事を見る</a>
+              <a href="/blog/tags" class="btn btn-outline">他のタグを見る</a>
+            </div>
+          </div>
+        ) : (
+          <div class="grid grid-auto-fit">
+            {page.data.map(post => (
+              <ArticleCard
+                title={post.data.title}
+                publishDate={post.data.publishDate}
+                tags={post.data.tags || []}
+                slug={post.id}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <!-- ページネーション -->
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        baseUrl={baseUrl}
+        prevUrl={prevUrl}
+        nextUrl={nextUrl}
+      />
+
+      <!-- タグ統計情報 -->
+      <div class="tag-stats card card-padding text-center mt-8">
+        <h2 class="text-lg mb-2">「{tag}」タグ統計</h2>
+        <div class="flex justify-center flex-wrap gap-6">
+          <div class="stat-item">
+            <span class="stat-number">{totalTagPosts}</span>
+            <span class="stat-label">総記事数</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{totalPages}</span>
+            <span class="stat-label">総ページ数</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{currentPage}</span>
+            <span class="stat-label">現在のページ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ナビゲーション -->
+      <nav class="text-center mt-8">
+        <div class="flex justify-center gap-4">
+          <a href="/blog" class="nav-back">ブログ一覧</a>
+          <a href="/blog/tags" class="nav-back">タグ一覧</a>
+          <a href="/" class="nav-back">ホーム</a>
+        </div>
+      </nav>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  /* ページ番号 */
+  .page-number {
+    font-size: var(--text-lg);
+    font-weight: normal;
+    color: var(--gray-600);
+  }
+
+
+  /* タグ情報 */
+  .tag-info {
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--color-white) 100%);
+  }
+
+  .tag-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .tag-lg {
+    font-size: var(--text-lg);
+    padding: var(--space-4) var(--space-6);
+  }
+
+  /* 統計情報 */
+  .tag-stats {
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--color-white) 100%);
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .stat-number {
+    font-size: var(--text-2xl);
+    font-weight: bold;
+    color: var(--primary-500);
+  }
+
+  .stat-label {
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+  }
+
+  /* レスポンシブ対応 */
+  @media (max-width: 640px) {
+    .tag-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .stat-number {
+      font-size: var(--text-xl);
+    }
+
+    .page-number {
+      display: block;
+      margin-top: var(--space-2);
+    }
+  }
+</style>

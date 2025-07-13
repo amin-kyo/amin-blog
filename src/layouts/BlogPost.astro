@@ -49,7 +49,7 @@ const relatedPosts = allPosts
         
         <h1 class="page-title gradient-text">{title}</h1>
         
-        <div class="flex-center flex-wrap gap-md mb-lg">
+        <div class="flex justify-center flex-wrap gap-4 mb-6">
           <time class="text-sm text-secondary" datetime={publishDate.toISOString()}>
             <FormattedDate date={publishDate} />
           </time>
@@ -62,7 +62,7 @@ const relatedPosts = allPosts
         </div>
         
         {tags.length > 0 && (
-          <div class="flex-center flex-wrap gap-md">
+          <div class="flex justify-center flex-wrap gap-4">
             {tags.map(tag => (
               <a href={`/blog/tags/${tag}`} class="tag tag-primary">
                 #{tag}
@@ -73,25 +73,25 @@ const relatedPosts = allPosts
       </header>
 
       <!-- 記事本文 -->
-      <article class="post-content card card-padding-lg mb-2xl">
+      <article class="post-content card card-padding-lg mb-12">
         <slot />
       </article>
 
       <!-- 関連記事セクション -->
       {relatedPosts.length > 0 && (
-        <aside class="card card-padding mb-2xl">
+        <aside class="card card-padding mb-12">
           <h2 class="section-title text-center">関連記事</h2>
-          <div class="grid grid-auto-fit-sm gap-lg">
+          <div class="grid grid-auto-fit-sm gap-6">
             {relatedPosts.map(post => (
               <article class="related-card">
                 <h3 class="related-card-title">
                   <a href={`/blog/${post.id}`}>{post.data.title}</a>
                 </h3>
-                <time class="text-sm text-secondary mb-sm" datetime={post.data.publishDate.toISOString()}>
+                <time class="text-sm text-secondary mb-2" datetime={post.data.publishDate.toISOString()}>
                   <FormattedDate date={post.data.publishDate} />
                 </time>
                 {post.data.tags && post.data.tags.length > 0 && (
-                  <div class="flex flex-wrap gap-sm">
+                  <div class="flex flex-wrap gap-2">
                     {post.data.tags.slice(0, 3).map(tag => (
                       <span class="tag">{tag}</span>
                     ))}

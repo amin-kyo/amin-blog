@@ -1,0 +1,322 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import { getCollection } from 'astro:content';
+import { getAllTags } from '../../utils/blog';
+
+export async function getStaticPaths({ paginate }) {
+  // ブログ記事を取得して公開日順にソート
+  const allPosts = await getCollection('blog');
+  const publishedPosts = allPosts
+    .filter(post => !post.data.draft)
+    .sort((a, b) => {
+      const dateA = new Date(a.data.publishDate);
+      const dateB = new Date(b.data.publishDate);
+      return dateB.getTime() - dateA.getTime();
+    });
+
+  // ページネーション設定
+  const pageSize = 8;
+  
+  return paginate(publishedPosts, {
+    pageSize: pageSize,
+  });
+}
+
+const { page } = Astro.props;
+const currentPage = page.currentPage;
+const totalPages = page.lastPage;
+
+// ページタイトルとメタディスクリプション
+const pageTitle = currentPage === 1 
+  ? `ブログ記事一覧 | ${SITE_TITLE}`
+  : `ブログ記事一覧 (${currentPage}ページ目) | ${SITE_TITLE}`;
+
+const pageDescription = currentPage === 1
+  ? `${SITE_TITLE}のブログ記事一覧ページです。`
+  : `${SITE_TITLE}のブログ記事一覧ページ ${currentPage}ページ目です。`;
+
+// SEO用のcanonical URL
+const canonicalUrl = currentPage === 1 ? '/blog' : `/blog/${currentPage}`;
+
+// ページネーション用URL
+const baseUrl = '/blog';
+const prevUrl = page.url.prev;
+const nextUrl = page.url.next;
+
+// サイドバー用データ（削除されたindex.astroから移植）
+const allPosts = await getCollection('blog');
+const publishedPosts = allPosts.filter(post => !post.data.draft);
+
+const allTags = await getAllTags();
+const popularTags = allTags.slice(0, 10); // 人気タグ上位10個
+
+// 月別アーカイブ作成
+const monthlyArchive = publishedPosts.reduce((acc, post) => {
+  const date = new Date(post.data.publishDate);
+  const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+  const monthLabel = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+  
+  if (!acc[monthKey]) {
+    acc[monthKey] = { label: monthLabel, count: 0 };
+  }
+  acc[monthKey].count++;
+  return acc;
+}, {} as Record<string, { label: string; count: number }>);
+
+const sortedArchive = Object.entries(monthlyArchive)
+  .sort(([a], [b]) => b.localeCompare(a))
+  .slice(0, 12); // 直近12ヶ月
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <BaseHead 
+      title={pageTitle} 
+      description={pageDescription}
+      webpage={{
+        type: "Blog",
+        name: SITE_TITLE,
+        alternateName: "amimemo"
+      }}
+    />
+    <!-- Canonical URL -->
+    <link rel="canonical" href={new URL(canonicalUrl, Astro.site)} />
+    
+    <!-- SEO用のprev/next -->
+    {prevUrl && <link rel="prev" href={new URL(prevUrl, Astro.site)} />}
+    {nextUrl && <link rel="next" href={new URL(nextUrl, Astro.site)} />}
+    
+    <!-- Open Graph for pagination -->
+    <meta property="og:type" content="website" />
+    {currentPage > 1 && <meta name="robots" content="noindex, follow" />}
+  </head>
+  <body>
+    <Header />
+    
+    <main class="container-wide">
+      <!-- ページヘッダー -->
+      <header class="page-header">
+        <h1 class="page-title gradient-text">
+          {currentPage === 1 ? 'Blog Posts' : `Blog Posts (${currentPage}ページ目)`}
+        </h1>
+        <p class="text-lg text-secondary">
+          {currentPage === 1 
+            ? '最新の記事'
+            : `全${page.total}件の記事から${page.start + 1}〜${page.end}件目を表示しています。`
+          }
+        </p>
+      </header>
+
+      <div class="blog-layout">
+        <!-- メインコンテンツ -->
+        <section class="articles-section">
+          <!-- 記事一覧 -->
+          {page.data.length === 0 ? (
+            <div class="card card-padding text-center">
+              <p class="text-lg text-secondary">記事が見つかりませんでした。</p>
+              <a href="/blog" class="btn btn-primary mt-4">最新記事を見る</a>
+            </div>
+          ) : (
+            <div class="grid grid-auto-fit">
+              {page.data.map(post => (
+                <ArticleCard
+                  title={post.data.title}
+                  publishDate={post.data.publishDate}
+                  tags={post.data.tags || []}
+                  slug={post.id}
+                />
+              ))}
+            </div>
+          )}
+
+          <!-- ページネーション -->
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            baseUrl={baseUrl}
+            prevUrl={prevUrl}
+            nextUrl={nextUrl}
+          />
+        </section>
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+          <!-- 人気タグ -->
+          <div class="card card-padding mb-8">
+            <h3 class="sidebar-title">Popular Tags</h3>
+            <div class="flex flex-wrap gap-2">
+              {popularTags.map(tag => (
+                <a href={`/blog/tags/${tag}`} class="tag">
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- 月別アーカイブ -->
+          <div class="card card-padding mb-8">
+            <h3 class="sidebar-title">Archive</h3>
+            <ul class="archive-list">
+              {sortedArchive.map(([key, data]) => (
+                <li class="archive-item">
+                  <a href={`/blog/archive/${key}`} class="archive-link">
+                    <span class="archive-month">{data.label}</span>
+                    <span class="archive-count text-sm text-secondary">({data.count})</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- 統計情報 -->
+          <div class="card card-padding">
+            <h3 class="sidebar-title">Stats</h3>
+            <div class="stats-grid">
+              <div class="stat-item gradient-bg text-center p-4">
+                <span class="stat-number">{publishedPosts.length}</span>
+                <span class="stat-label">記事</span>
+              </div>
+              <div class="stat-item gradient-bg text-center p-4">
+                <span class="stat-number">{allTags.length}</span>
+                <span class="stat-label">タグ</span>
+              </div>
+              <div class="stat-item gradient-bg text-center p-4">
+                <span class="stat-number">{Object.keys(monthlyArchive).length}</span>
+                <span class="stat-label">ヶ月</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- ナビゲーション -->
+      <nav class="text-center mt-8">
+        <a href="/" class="nav-back">ホームに戻る</a>
+      </nav>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  /* ブログレイアウト */
+  .blog-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--space-24);
+    align-items: start;
+  }
+
+  .articles-section {
+    min-height: 600px;
+  }
+
+  /* サイドバー */
+  .sidebar {
+    position: sticky;
+    top: var(--space-20);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--primary-500);
+  }
+
+
+  /* アーカイブリスト */
+  .archive-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .archive-item {
+    margin-bottom: var(--space-4);
+  }
+
+  .archive-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) 0;
+    text-decoration: none;
+    color: #4a5568;
+    border-bottom: 1px solid #e2e8f0;
+    transition: color 0.2s ease;
+  }
+
+  .archive-link:hover {
+    color: var(--primary-500);
+  }
+
+  .archive-month {
+    font-weight: 500;
+  }
+
+  /* 統計情報 */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  .stat-item {
+    border-radius: var(--radius-md);
+    color: white;
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+  }
+
+  /* レスポンシブ対応 */
+  @media (max-width: 1024px) {
+    .blog-layout {
+      grid-template-columns: 1fr;
+      gap: var(--space-20);
+    }
+
+    .sidebar {
+      position: static;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-6);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .articles-section {
+      margin-top: var(--space-6);
+    }
+  }
+</style>

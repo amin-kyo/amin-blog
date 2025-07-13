@@ -6,7 +6,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import ArticleCard from '../components/ArticleCard.astro';
 
-// ブログ記事を取得して公開日順にソート
+// ブログ記事を取得して公開日順にソート（最新5件のみ）
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts
   .filter(post => !post.data.draft) // 下書きを除外
@@ -14,7 +14,11 @@ const sortedPosts = allPosts
     const dateA = new Date(a.data.publishDate);
     const dateB = new Date(b.data.publishDate);
     return dateB.getTime() - dateA.getTime(); // 新しい順
-  });
+  })
+  .slice(0, 5); // 最新5件のみ
+
+// 全体の記事数を取得（「もっと見る」ボタン表示判定用）
+const totalPosts = allPosts.filter(post => !post.data.draft).length;
 ---
 
 <!doctype html>
@@ -34,13 +38,13 @@ const sortedPosts = allPosts
 	<Header />
 	<main class="container">
 		<header class="page-header">
-			<h1 class="page-title gradient-text">Latest Blog Posts</h1>
+			<h1 class="page-title gradient-text">HOME</h1>
 			<p class="text-lg text-secondary">
-				最近暑いね
+				最近暑くない？
 			</p>
 		</header>
 
-		<section class="mb-2xl">
+		<section class="mb-8">
 			{sortedPosts.length === 0 ? (
 				<div class="card card-padding text-center">
 					<p class="text-lg text-secondary">まだ記事がありません。もうしばらくお待ちください。</p>
@@ -58,6 +62,22 @@ const sortedPosts = allPosts
 				</div>
 			)}
 		</section>
+
+		<!-- もっと見るセクション -->
+		{totalPosts > 5 && (
+			<section class="more-posts-section text-center mb-12">
+				<div class="card card-padding">
+					<h2 class="text-xl mb-4">さらに記事を探す</h2>
+					<p class="text-secondary mb-6">
+						全{totalPosts}件の記事があります。すべての記事をご覧になりたい方はこちら
+					</p>
+					<a href="/blog" class="btn btn-primary btn-lg">
+						すべての記事を見る
+						<span aria-hidden="true">→</span>
+					</a>
+				</div>
+			</section>
+		)}
 	</main>
 	<Footer />
 </body>

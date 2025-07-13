@@ -2,4 +2,4 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'あみめも';
-export const SITE_DESCRIPTION = 'あみんのメモ';
+export const SITE_DESCRIPTION = '『あみめも』趣味ブログです。インターネットがすき。';
