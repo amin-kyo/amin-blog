@@ -29,6 +29,7 @@ const relatedPosts = allPosts
       image={heroImage}
       article={{
         publishedTime: publishDate.toISOString(),
+        modifiedTime: updatedDate?.toISOString(),
         author: "Amin",
         tags: tags,
         type: "BlogPosting"
