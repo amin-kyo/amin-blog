@@ -103,14 +103,14 @@ const sortedArchive = Object.entries(monthlyArchive)
       <!-- ページヘッダー -->
       <header class="page-header">
         <h1 class="page-title gradient-text">
-          {currentPage === 1 ? 'Blog Posts' : `Blog Posts (${currentPage}ページ目)`}
+          {currentPage === 1 ? 'Blog Posts' : `Blog Posts (Page ${currentPage})`}
         </h1>
-        <p class="text-lg text-secondary">
+        <!-- <p class="text-lg text-secondary">
           {currentPage === 1 
             ? '最新の記事'
             : `全${page.total}件の記事から${page.start + 1}〜${page.end}件目を表示しています。`
           }
-        </p>
+        </p> -->
       </header>
 
       <div class="blog-layout">
@@ -123,7 +123,7 @@ const sortedArchive = Object.entries(monthlyArchive)
               <a href="/blog" class="btn btn-primary mt-4">最新記事を見る</a>
             </div>
           ) : (
-            <div class="grid grid-auto-fit">
+            <div class="grid grid-auto-fill gap-6">
               {page.data.map(post => (
                 <ArticleCard
                   title={post.data.title}
@@ -167,7 +167,7 @@ const sortedArchive = Object.entries(monthlyArchive)
                 <li class="archive-item">
                   <a href={`/blog/archive/${key}`} class="archive-link">
                     <span class="archive-month">{data.label}</span>
-                    <span class="archive-count text-sm text-secondary">({data.count})</span>
+                    <span class="archive-count text-sm text-secondary">{data.count}</span>
                   </a>
                 </li>
               ))}

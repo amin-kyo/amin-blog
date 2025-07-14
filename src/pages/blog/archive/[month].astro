@@ -12,6 +12,7 @@ interface Props {
   year: number;
   monthNumber: number;
   posts: any[];
+  existingMonths: string[];
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -34,6 +35,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return acc;
   }, {} as Record<string, { year: number; monthNumber: number; posts: any[] }>);
 
+  // 存在する月のキーをソートして配列化
+  const existingMonths = Object.keys(monthlyPosts).sort();
+
   // 各月のパスを生成
   return Object.entries(monthlyPosts).map(([monthKey, data]) => ({
     params: { month: monthKey },
@@ -45,12 +49,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
         const dateA = new Date(a.data.publishDate);
         const dateB = new Date(b.data.publishDate);
         return dateB.getTime() - dateA.getTime(); // 新しい順
-      })
+      }),
+      existingMonths: existingMonths
     }
   }));
 };
 
-const { month, year, monthNumber, posts } = Astro.props;
+const { month, year, monthNumber, posts, existingMonths } = Astro.props;
 
 // 月名の配列（日本語）
 const monthNames = [
@@ -62,16 +67,21 @@ const monthName = monthNames[monthNumber - 1];
 const pageTitle = `${year}年${monthName}の記事一覧`;
 const pageDescription = `${year}年${monthName}に公開された記事の一覧です。`;
 
-// 前後の月を計算（ナビゲーション用）
-const prevMonth = new Date(year, monthNumber - 2, 1);
-const nextMonth = new Date(year, monthNumber, 1);
-const today = new Date();
+// 前後の月を計算（存在する月のみ）
+const currentIndex = existingMonths.indexOf(month);
+const prevMonthKey = currentIndex > 0 ? existingMonths[currentIndex - 1] : null;
+const nextMonthKey = currentIndex < existingMonths.length - 1 ? existingMonths[currentIndex + 1] : null;
 
-const prevMonthKey = `${prevMonth.getFullYear()}-${String(prevMonth.getMonth() + 1).padStart(2, '0')}`;
-const nextMonthKey = `${nextMonth.getFullYear()}-${String(nextMonth.getMonth() + 1).padStart(2, '0')}`;
+// 前後の月の日付情報を取得
+const prevMonthInfo = prevMonthKey ? {
+  year: parseInt(prevMonthKey.split('-')[0]),
+  monthNumber: parseInt(prevMonthKey.split('-')[1])
+} : null;
 
-// 次の月が未来の場合は表示しない
-const showNextMonth = nextMonth <= today;
+const nextMonthInfo = nextMonthKey ? {
+  year: parseInt(nextMonthKey.split('-')[0]),
+  monthNumber: parseInt(nextMonthKey.split('-')[1])
+} : null;
 ---
 
 <html lang="ja">
@@ -99,17 +109,19 @@ const showNextMonth = nextMonth <= today;
 
     <!-- 月間ナビゲーション -->
     <nav class="month-navigation">
-      <a href={`/blog/archive/${prevMonthKey}`} class="month-nav-button">
-        ← {prevMonth.getFullYear()}年{monthNames[prevMonth.getMonth()]}
-      </a>
+      {prevMonthInfo && (
+        <a href={`/blog/archive/${prevMonthKey}`} class="month-nav-button">
+          ← {prevMonthInfo.year}年{monthNames[prevMonthInfo.monthNumber - 1]}
+        </a>
+      )}
       
       <a href="/blog" class="month-nav-button month-nav-home">
         記事一覧へ
       </a>
       
-      {showNextMonth && (
+      {nextMonthInfo && (
         <a href={`/blog/archive/${nextMonthKey}`} class="month-nav-button">
-          {nextMonth.getFullYear()}年{monthNames[nextMonth.getMonth()]} →
+          {nextMonthInfo.year}年{monthNames[nextMonthInfo.monthNumber - 1]} →
         </a>
       )}
     </nav>

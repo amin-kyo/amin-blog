@@ -12,7 +12,7 @@ const techStack = {
     { name: 'HTML', level: 3, note: 'わりと好き' },
     { name: 'CSS', level: 3, note: '好き' },
     { name: 'JavaScript', level: 2, note: 'ちょっと' },
-    { name: 'kintone', level: 3, note: '業務システム開発' },
+    { name: 'kintone', level: 3, note: 'ちょっとわかる' },
     { name: 'VBA', level: 2, note: '触りたくはない' },
   ],
   learning: [
@@ -22,13 +22,15 @@ const techStack = {
     { name: 'AWS', level: 1, note: 'むずかしい' },
     { name: 'GitHub', level: 2, note: 'このブログのソース管理' },
     { name: 'Cloudflare Pages', level: 2, note: 'このブログのホスティング' },
+    { name: 'Generative AI', level: 1, note: 'おともだち' },
+    { name: 'PostgreSQL', level: 1, note: 'データは入れられる' },
   ],
 };
 
 const profileData = [
-  { label: '職種', value: '企画屋さん' },
-  { label: '職歴', value: '下水処理場オペレーター (6年) → DX推進・企画' },
-  { label: '領域', value: '企画・提案、調整、従業員教育、動画・資料制作、開発' },
+  { label: 'Role', value: '企画屋さん' },
+  { label: 'Experience', value: '下水処理場オペレーター → 企画・DX推進' },
+  { label: 'Specialties', value: '企画・提案、調整、従業員教育、動画・資料制作、開発' },
 ];
 
 const certifications = [
@@ -38,15 +40,10 @@ const certifications = [
 ];
 
 const interests = {
-  tech: ['Webデザイン', 'UI/UX', 'CSS', 'IT分野全般'],
+  tech: ['Webデザイン', 'UI/UX', 'CSS', 'IT分野全般', 'ライブ配信'],
   hobbies: ['PC・ガジェット', 'ビデオゲーム', 'クラフトビール','ウイスキー','ダーツ', '歌','インテリア', '自転車', 'キャンプ'],
 };
 
-const blogStats = [
-  { label: 'コンテンツ', value: 'メモ' },
-  { label: '環境', value: 'Astro + GitHub + Cloudflare Pages' },
-  { label: '執筆環境', value: 'iPad mini + GitHub Web Editor' },
-];
 
 const renderStars = (level: number) => {
   return '⭐'.repeat(level);
@@ -63,8 +60,8 @@ const renderStars = (level: number) => {
     
     <main class="container">
       <!-- ヒーロー -->
-      <header class="hero-header mb-12">
-        <h1 class="page-title">About</h1>
+      <header class="page-header">
+        <h1 class="page-title gradient-text">About</h1>
       </header>
 
       <!-- Overview セクション -->
@@ -159,18 +156,6 @@ const renderStars = (level: number) => {
         </div>
       </section>
       
-      <!-- Blog Stats セクション -->
-      <section class="card card-padding-lg mb-8">
-        <h2 class="section-title">Blog Stats</h2>
-        <div class="stats-grid">
-          {blogStats.map((stat) => (
-            <div class="blog-stat-item">
-              <dt class="stat-label">{stat.label}</dt>
-              <dd class="stat-value">{stat.value}</dd>
-            </div>
-          ))}
-        </div>
-      </section>
       
       <!-- Contact セクション -->
       <section class="card card-padding-lg">

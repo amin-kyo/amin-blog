@@ -34,11 +34,11 @@
   overflow: hidden;
 }
 
-.card:hover {
+/* .card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-xl);
   border-color: var(--primary-200);
-}
+} */
 
 .card-padding {
   padding: var(--space-8);
@@ -83,6 +83,8 @@
 }
 
 .btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--secondary-600) 100%);
+  color: var(--color-white);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }

@@ -39,7 +39,7 @@ const totalPages = page.lastPage;
 // ページタイトルとメタディスクリプション
 const pageTitle = currentPage === 1 
   ? `「${tag}」の記事一覧 | ${SITE_TITLE}`
-  : `「${tag}」の記事一覧 (${currentPage}ページ目) | ${SITE_TITLE}`;
+  : `「${tag}」の記事一覧 (Page ${currentPage}) | ${SITE_TITLE}`;
 
 const pageDescription = currentPage === 1
   ? `「${tag}」タグが付いた記事の一覧ページです。関連する記事をまとめてご覧いただけます。`
@@ -122,7 +122,7 @@ const totalTagPosts = allPosts
             </div>
           </div>
         ) : (
-          <div class="grid grid-auto-fit">
+          <div class="grid grid-auto-fill">
             {page.data.map(post => (
               <ArticleCard
                 title={post.data.title}

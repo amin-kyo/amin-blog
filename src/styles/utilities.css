@@ -108,6 +108,18 @@
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
+.grid-auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+.grid-auto-fill-sm {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.grid-auto-fill-lg {
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
 .grid-1 { grid-template-columns: repeat(1, 1fr); }
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
@@ -314,7 +326,8 @@
 
 /* ===== レスポンシブ調整 ===== */
 @media (max-width: 1024px) {
-  .grid-auto-fit {
+  .grid-auto-fit,
+  .grid-auto-fill {
     grid-template-columns: 1fr;
   }
   
@@ -329,7 +342,10 @@
 
 @media (max-width: 768px) {
   .grid-auto-fit,
-  .grid-auto-fit-lg {
+  .grid-auto-fit-lg,
+  .grid-auto-fill,
+  .grid-auto-fill-sm,
+  .grid-auto-fill-lg {
     grid-template-columns: 1fr;
   }
   

@@ -64,7 +64,7 @@
   overflow: hidden;
 }
 
-.archive-count::before {
+/* .archive-count::before {
   content: '';
   position: absolute;
   top: 0;
@@ -73,7 +73,7 @@
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
   animation: shimmer 2s infinite;
-}
+} */
 
 @keyframes shimmer {
   0% { left: -100%; }
@@ -191,7 +191,7 @@
 
 .articles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: var(--space-6);
 }
 
@@ -316,6 +316,7 @@
   box-shadow: var(--shadow-md);
 }
 
+
 .month-nav-home {
   background: var(--gradient-primary);
   color: var(--color-white);
@@ -324,6 +325,8 @@
 }
 
 .month-nav-home:hover {
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--secondary-600) 100%);
+  color: var(--color-white);
   transform: translateY(-2px);
   box-shadow: var(--shadow-primary);
 }

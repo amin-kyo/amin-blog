@@ -15,7 +15,7 @@ const sortedPosts = allPosts
     const dateB = new Date(b.data.publishDate);
     return dateB.getTime() - dateA.getTime(); // 新しい順
   })
-  .slice(0, 5); // 最新5件のみ
+  .slice(0, 6); // 最新5件のみ
 
 // 全体の記事数を取得（「もっと見る」ボタン表示判定用）
 const totalPosts = allPosts.filter(post => !post.data.draft).length;
@@ -39,10 +39,10 @@ const totalPosts = allPosts.filter(post => !post.data.draft).length;
 	<main class="container">
 		<header class="page-header">
 			<h1 class="page-title gradient-text">HOME</h1>
+		</header>
 			<p class="text-lg text-secondary">
 				最近暑くない？
 			</p>
-		</header>
 
 		<section class="mb-8">
 			{sortedPosts.length === 0 ? (
@@ -50,7 +50,7 @@ const totalPosts = allPosts.filter(post => !post.data.draft).length;
 					<p class="text-lg text-secondary">まだ記事がありません。もうしばらくお待ちください。</p>
 				</div>
 			) : (
-				<div class="grid grid-auto-fit">
+				<div class="grid grid-auto-fill gap-4">
 					{sortedPosts.map(post => (
 						<ArticleCard
 							title={post.data.title}
@@ -67,9 +67,8 @@ const totalPosts = allPosts.filter(post => !post.data.draft).length;
 		{totalPosts > 5 && (
 			<section class="more-posts-section text-center mb-12">
 				<div class="card card-padding">
-					<h2 class="text-xl mb-4">さらに記事を探す</h2>
 					<p class="text-secondary mb-6">
-						全{totalPosts}件の記事があります。すべての記事をご覧になりたい方はこちら
+						全{totalPosts}件の記事があります。
 					</p>
 					<a href="/blog" class="btn btn-primary btn-lg">
 						すべての記事を見る
