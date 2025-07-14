@@ -3,51 +3,101 @@
    =========================================== */
 
 :root {
-  /* ===== カラーパレット ===== */
+  /* ===== カラーパレット - Soft Elegance ===== */
   /* ベースカラー */
-  --color-white: #ffffff;
-  --color-black: #000000;
+  --color-white: #fefefe;
+  --color-black: #2a1a2e;
   
-  /* グレースケール */
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
+  /* グレースケール - 温かみのあるトーン */
+  --gray-50: #faf9fb;
+  --gray-100: #f5f3f7;
+  --gray-200: #ede8f0;
+  --gray-300: #ddd4e3;
+  --gray-400: #c4b5cf;
+  --gray-500: #9d8aa8;
+  --gray-600: #7a6785;
+  --gray-700: #5d4e66;
+  --gray-800: #443750;
+  --gray-900: #2a1a2e;
   
-  /* プライマリカラー */
-  --primary-50: #f0f4ff;
-  --primary-100: #e0e7ff;
-  --primary-200: #c7d2fe;
-  --primary-300: #a5b4fc;
-  --primary-400: #818cf8;
-  --primary-500: #667eea;
-  --primary-600: #5a67d8;
-  --primary-700: #4c51bf;
-  --primary-800: #434190;
-  --primary-900: #3c366b;
+  /* プライマリカラー - エレガントラベンダー */
+  --primary-50: #f8f6fc;
+  --primary-100: #f0ebf8;
+  --primary-200: #e4d9f1;
+  --primary-300: #d1bfe6;
+  --primary-400: #b89dd7;
+  --primary-500: #b19cd9;    /* メインカラー - 上品なラベンダー */
+  --primary-600: #a388c7;    /* ホバー用 - 深いラベンダー */
+  --primary-700: #8f6fb5;
+  --primary-800: #7a5ba0;
+  --primary-900: #654a85;
   
-  /* セカンダリカラー */
-  --secondary-50: #faf5ff;
-  --secondary-100: #f3e8ff;
-  --secondary-200: #e9d5ff;
-  --secondary-300: #d8b4fe;
-  --secondary-400: #c084fc;
-  --secondary-500: #764ba2;
-  --secondary-600: #9333ea;
-  --secondary-700: #7c3aed;
-  --secondary-800: #6b21a8;
-  --secondary-900: #581c87;
+  /* セカンダリカラー - ソフトピンク */
+  --secondary-50: #fef7f9;
+  --secondary-100: #fdedf2;
+  --secondary-200: #fcd9e6;
+  --secondary-300: #f9bad0;
+  --secondary-400: #f58fb0;
+  --secondary-500: #ffb6c1;  /* ライトピンク */
+  --secondary-600: #f194a8;
+  --secondary-700: #e06a8a;
+  --secondary-800: #c54971;
+  --secondary-900: #a6355f;
   
-  /* グラデーション */
+  /* アクセントカラー - ピンクパウダー */
+  --accent-50: #fef9fb;
+  --accent-100: #fef1f5;
+  --accent-200: #fde2ea;
+  --accent-300: #fbc7d8;
+  --accent-400: #f7a1bc;
+  --accent-500: #ffd1dc;    /* ピンクパウダー */
+  --accent-600: #f0b8c6;
+  --accent-700: #dc95a8;
+  --accent-800: #c2758a;
+  --accent-900: #a45970;
+  
+  /* 機能カラー - 温かみのある成功・警告・エラー */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-300: #86efac;
+  --success-400: #4ade80;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  --success-800: #166534;
+  --success-900: #14532d;
+  
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-200: #fde68a;
+  --warning-300: #fcd34d;
+  --warning-400: #fbbf24;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --warning-900: #78350f;
+  
+  --error-50: #fef2f2;
+  --error-100: #fee2e2;
+  --error-200: #fecaca;
+  --error-300: #fca5a5;
+  --error-400: #f87171;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+  --error-700: #b91c1c;
+  --error-800: #991b1b;
+  --error-900: #7f1d1d;
+  
+  /* グラデーション - Soft Elegance 専用 */
   --gradient-primary: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 100%);
   --gradient-light: linear-gradient(135deg, var(--primary-100) 0%, var(--secondary-100) 100%);
-  --gradient-bg: linear-gradient(135deg, var(--gray-100) 0%, var(--color-white) 100%);
+  --gradient-bg: linear-gradient(135deg, var(--gray-50) 0%, var(--accent-50) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--primary-400) 0%, var(--accent-400) 50%, var(--secondary-400) 100%);
+  --gradient-card: linear-gradient(145deg, var(--primary-50) 0%, var(--accent-50) 100%);
+  --gradient-button: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+  --gradient-elegant: linear-gradient(120deg, var(--primary-300) 0%, var(--accent-300) 40%, var(--secondary-300) 100%);
   
   /* ===== タイポグラフィ ===== */
   /* フォントファミリー */
@@ -117,8 +167,27 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  --shadow-primary: 0 4px 16px rgba(102, 126, 234, 0.3);
-  --shadow-secondary: 0 4px 16px rgba(118, 75, 162, 0.3);
+  --shadow-primary: 0 4px 16px rgba(177, 156, 217, 0.3);
+  --shadow-secondary: 0 4px 16px rgba(255, 182, 193, 0.3);
+  --shadow-focus: 0 0 0 3px rgba(177, 156, 217, 0.3);
+  --shadow-focus-ring: 0 0 0 2px var(--primary-500);
+  --shadow-text: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-icon: 0 2px 4px rgba(0, 0, 0, 0.2);
+  
+  /* ブランドカラー */
+  --brand-mastodon: var(--primary-500);
+  --brand-github: var(--gray-800);
+  
+  /* 透明度付きカラー */
+  --color-overlay-light: rgba(255, 255, 255, 0.2);
+  --color-shadow-light: rgba(0, 0, 0, 0.1);
+  --color-shadow-dark: rgba(0, 0, 0, 0.2);
+  
+  /* 特殊グラデーション */
+  --gradient-hobby: linear-gradient(135deg, var(--accent-400) 0%, var(--secondary-500) 100%);
+  --gradient-mastodon: linear-gradient(45deg, var(--primary-500), var(--primary-700));
+  --gradient-github: linear-gradient(45deg, var(--gray-800), var(--gray-700));
+  --gradient-shimmer: linear-gradient(90deg, transparent, var(--color-overlay-light), transparent);
   
   /* ===== レイアウト ===== */
   /* コンテナ幅 */

@@ -85,7 +85,7 @@
   color: var(--primary-500);
   font-size: var(--text-5xl);
   font-weight: var(--font-bold);
-  text-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+  text-shadow: var(--shadow-text);
 }
 
 .tag-title {
@@ -181,7 +181,7 @@
 
 .nav-home:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--shadow-primary);
 }
 
 /* ===== 記事セクション ===== */

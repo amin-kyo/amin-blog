@@ -2,9 +2,10 @@
 const today = new Date();
 ---
 
-<footer>
-	&copy; {today.getFullYear()} Amin Kyo. All rights reserved.
-	<div class="social-links">
+<footer class="site-footer">
+	<div class="footer-content">
+		&copy; {today.getFullYear()} Amin Kyo. All rights reserved.
+		<div class="footer-social-links">
 		<a href="https://mstdn.jp/@amin" target="_blank">
 			<span class="sr-only">Mastodon</span>
 			<svg
@@ -29,26 +30,6 @@ const today = new Date();
 				></path></svg
 			>
 		</a>
+		</div>
 	</div>
 </footer>
-<style>
-	footer {
-		padding: 2em 1em 6em 1em;
-		background: var(--gradient-bg) no-repeat;
-		color: var(--gray-600);
-		text-align: center;
-	}
-	.social-links {
-		display: flex;
-		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
-	}
-	.social-links a {
-		text-decoration: none;
-		color: var(--gray-600);
-	}
-	.social-links a:hover {
-		color: var(--gray-700);
-	}
-</style>

@@ -17,6 +17,7 @@
 
 /* ===== ページ固有システム読み込み ===== */
 @import './pages/about.css';   /* Aboutページ専用 */
+@import './pages/blog.css';    /* ブログ一覧ページ専用 */
 
 /* ===== 互換性サポート（最小限） ===== */
 /* Bear Blog minimal compatibility */
