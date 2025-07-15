@@ -129,3 +129,26 @@ const imageAlt = `${title} - ${SITE_TITLE}`;
 		"description": description
 	})} />
 )}
+
+<!-- テーマ初期化スクリプト -->
+<script>
+	// フラッシュを防ぐため、最初にテーマを設定
+	(function() {
+		const getTheme = () => {
+			if (typeof localStorage !== 'undefined') {
+				const stored = localStorage.getItem('theme');
+				if (stored) return stored;
+			}
+			
+			// システムの設定を確認
+			if (typeof window !== 'undefined' && window.matchMedia) {
+				return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			}
+			
+			return 'light';
+		};
+		
+		const theme = getTheme();
+		document.documentElement.setAttribute('data-theme', theme);
+	})();
+</script>

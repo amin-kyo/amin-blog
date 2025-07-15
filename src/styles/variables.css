@@ -226,3 +226,78 @@
   --transition-slow: 0.3s ease;
   --transition-all: all var(--transition-base);
 }
+
+/* ===== ダークモード ===== */
+[data-theme="dark"] {
+  /* ベースカラー */
+  --color-white: #1a1125;
+  --color-black: #fefefe;
+  
+  /* グレースケール - 反転 */
+  --gray-50: #2a1a2e;
+  --gray-100: #443750;
+  --gray-200: #5d4e66;
+  --gray-300: #7a6785;
+  --gray-400: #9d8aa8;
+  --gray-500: #c4b5cf;
+  --gray-600: #ddd4e3;
+  --gray-700: #ede8f0;
+  --gray-800: #f5f3f7;
+  --gray-900: #faf9fb;
+  
+  /* プライマリカラー - ダークモード用調整 */
+  --primary-50: #2a1a2e;
+  --primary-100: #443750;
+  --primary-200: #5d4e66;
+  --primary-300: #7a6785;
+  --primary-400: #9d8aa8;
+  --primary-500: #c9b3e3;
+  --primary-600: #dcc7f0;
+  --primary-700: #e4d9f1;
+  --primary-800: #f0ebf8;
+  --primary-900: #f8f6fc;
+  
+  /* セカンダリカラー - ダークモード用調整 */
+  --secondary-50: #2a1a2e;
+  --secondary-100: #443750;
+  --secondary-200: #5d4e66;
+  --secondary-300: #7a6785;
+  --secondary-400: #9d8aa8;
+  --secondary-500: #f5a7ba;
+  --secondary-600: #f8c3d1;
+  --secondary-700: #fcd9e6;
+  --secondary-800: #fdedf2;
+  --secondary-900: #fef7f9;
+  
+  /* アクセントカラー - ダークモード用調整 */
+  --accent-50: #2a1a2e;
+  --accent-100: #443750;
+  --accent-200: #5d4e66;
+  --accent-300: #7a6785;
+  --accent-400: #9d8aa8;
+  --accent-500: #f5d7dc;
+  --accent-600: #f8e3e8;
+  --accent-700: #fce8ed;
+  --accent-800: #fef1f5;
+  --accent-900: #fef9fb;
+  
+  /* シャドウ - ダークモード用調整 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  --shadow-primary: 0 4px 16px rgba(201, 179, 227, 0.3);
+  --shadow-secondary: 0 4px 16px rgba(245, 167, 186, 0.3);
+  --shadow-focus: 0 0 0 3px rgba(201, 179, 227, 0.3);
+  --shadow-focus-ring: 0 0 0 2px var(--primary-500);
+  --shadow-text: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-icon: 0 2px 4px rgba(0, 0, 0, 0.5);
+  
+  /* 透明度付きカラー */
+  --color-overlay-light: rgba(42, 26, 46, 0.2);
+  --color-shadow-light: rgba(0, 0, 0, 0.4);
+  --color-shadow-dark: rgba(0, 0, 0, 0.6);
+}

@@ -453,6 +453,70 @@
   text-decoration: underline;
 }
 
+/* ===== テーマ切り替えボタン ===== */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-lg);
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: var(--transition-all);
+  padding: 0;
+  position: relative;
+}
+
+.theme-toggle:hover {
+  background: var(--gray-100);
+  border-color: var(--primary-500);
+  color: var(--primary-500);
+  transform: translateY(-1px);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+.theme-icon {
+  width: 20px;
+  height: 20px;
+  transition: var(--transition-all);
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+.theme-icon-moon {
+  display: block;
+}
+
+/* ダークモード時のアイコン表示 */
+[data-theme="dark"] .theme-icon-sun {
+  display: block;
+}
+
+[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+
+/* ダークモード時のボタンスタイル */
+[data-theme="dark"] .theme-toggle {
+  border-color: var(--gray-600);
+  color: var(--gray-300);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: var(--gray-700);
+  border-color: var(--primary-400);
+  color: var(--primary-400);
+}
+
 /* ===== レスポンシブ調整 ===== */
 @media (max-width: 640px) {
   .pagination-numbers {
