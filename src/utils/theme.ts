@@ -55,7 +55,7 @@ export function initializeTheme(): void {
 /**
  * システムの設定変更を監視
  */
-export function watchSystemTheme(): void {
+export function watchSystemTheme(): (() => void) | void {
   if (typeof window !== 'undefined' && window.matchMedia) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     

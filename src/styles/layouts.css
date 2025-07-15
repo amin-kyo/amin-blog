@@ -180,7 +180,19 @@
   }
 
   .social-links {
+    /* テーマ切り替えボタンは表示を維持 */
+    gap: var(--space-2);
+  }
+  
+  /* スマホ時はMastodonとGitHubアイコンを非表示、テーマ切り替えのみ表示 */
+  .social-links a {
     display: none;
+  }
+  
+  /* テーマ切り替えボタンは常に表示 */
+  .social-links .theme-toggle {
+    display: flex;
+    order: -1; /* 最優先で左側に配置 */
   }
 
   .internal-links {
