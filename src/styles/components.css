@@ -146,6 +146,229 @@
   border: 1px solid var(--gray-200);
 }
 
+/* ===== エラーページ ===== */
+.error-page {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) 0;
+}
+
+.error-content {
+  text-align: center;
+  max-width: 600px;
+  padding: var(--space-8);
+}
+
+.error-icon {
+  margin-bottom: var(--space-8);
+}
+
+.error-number {
+  font-size: 6rem;
+  font-weight: var(--font-bold);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  display: block;
+}
+
+.error-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--gray-800);
+  margin-bottom: var(--space-4);
+}
+
+.error-message {
+  font-size: var(--text-lg);
+  color: var(--gray-600);
+  line-height: 1.6;
+  margin-bottom: var(--space-8);
+}
+
+.error-actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-8);
+}
+
+.error-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.error-actions .icon {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.error-suggestion {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-top: var(--space-8);
+}
+
+.error-suggestion p {
+  font-weight: var(--font-medium);
+  color: var(--gray-700);
+  margin-bottom: var(--space-3);
+}
+
+.error-suggestion ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-suggestion li {
+  color: var(--gray-600);
+  margin-bottom: var(--space-2);
+  padding-left: var(--space-4);
+  position: relative;
+}
+
+.error-suggestion li:before {
+  content: "•";
+  color: var(--primary-500);
+  position: absolute;
+  left: 0;
+  font-weight: var(--font-bold);
+}
+
+/* ダークモード対応 */
+[data-theme="dark"] .error-title {
+  color: var(--gray-100);
+}
+
+[data-theme="dark"] .error-message {
+  color: var(--gray-300);
+}
+
+[data-theme="dark"] .error-suggestion {
+  background: var(--gray-800);
+  border-color: var(--gray-700);
+}
+
+[data-theme="dark"] .error-suggestion p {
+  color: var(--gray-200);
+}
+
+[data-theme="dark"] .error-suggestion li {
+  color: var(--gray-300);
+}
+
+@media (max-width: 768px) {
+  .error-number {
+    font-size: 4rem;
+  }
+  
+  .error-title {
+    font-size: var(--text-2xl);
+  }
+  
+  .error-message {
+    font-size: var(--text-base);
+  }
+  
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .error-actions .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* ===== 画像エラーハンドリング ===== */
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray-100);
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-lg);
+  min-height: 200px;
+  width: 100%;
+  position: relative;
+}
+
+.image-placeholder-content {
+  text-align: center;
+  color: var(--gray-500);
+  padding: var(--space-4);
+}
+
+.image-placeholder-icon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--space-2);
+  stroke-width: 1.5;
+}
+
+.image-placeholder-text {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+}
+
+/* 画像エラー状態 */
+.image-error {
+  opacity: 0.7;
+  filter: grayscale(100%);
+}
+
+/* ダークモード対応 */
+[data-theme="dark"] .image-placeholder {
+  background: var(--gray-800);
+  border-color: var(--gray-600);
+}
+
+[data-theme="dark"] .image-placeholder-content {
+  color: var(--gray-400);
+}
+
+/* ヒーロー画像専用プレースホルダー */
+.hero-image-placeholder {
+  aspect-ratio: 2/1;
+  min-height: 300px;
+}
+
+/* 記事カード画像専用プレースホルダー */
+.article-card-image-placeholder {
+  aspect-ratio: 16/9;
+  min-height: 200px;
+}
+
+@media (max-width: 768px) {
+  .image-placeholder {
+    min-height: 150px;
+  }
+  
+  .hero-image-placeholder {
+    min-height: 200px;
+  }
+  
+  .article-card-image-placeholder {
+    min-height: 150px;
+  }
+  
+  .image-placeholder-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
 .tag:hover {
   background: var(--primary-500);
   color: var(--color-white);

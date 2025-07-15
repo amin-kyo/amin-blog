@@ -3,20 +3,26 @@
  * ダークモード・ライトモードの切り替えとLocalStorageでの永続化
  */
 
+import { safeLocalStorage, safeMediaQuery, logError } from './errorHandler';
+
 export type Theme = 'light' | 'dark';
 
 /**
  * 現在のテーマを取得
  */
 export function getCurrentTheme(): Theme {
-  if (typeof localStorage !== 'undefined') {
-    const stored = localStorage.getItem('theme') as Theme;
-    if (stored) return stored;
+  const stored = safeLocalStorage('theme');
+  if (stored && (stored === 'light' || stored === 'dark')) {
+    return stored as Theme;
   }
   
   // システムの設定を確認
   if (typeof window !== 'undefined' && window.matchMedia) {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    try {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    } catch (error) {
+      logError('warn', 'Failed to check system theme preference', error as Error);
+    }
   }
   
   return 'light';
@@ -26,12 +32,14 @@ export function getCurrentTheme(): Theme {
  * テーマを設定
  */
 export function setTheme(theme: Theme): void {
-  if (typeof document !== 'undefined') {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-  
-  if (typeof localStorage !== 'undefined') {
-    localStorage.setItem('theme', theme);
+  try {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+    
+    safeLocalStorage('theme', theme, 'set');
+  } catch (error) {
+    logError('error', 'Failed to set theme', error as Error, { theme });
   }
 }
 
@@ -39,39 +47,39 @@ export function setTheme(theme: Theme): void {
  * テーマを切り替え
  */
 export function toggleTheme(): void {
-  const currentTheme = getCurrentTheme();
-  const newTheme: Theme = currentTheme === 'light' ? 'dark' : 'light';
-  setTheme(newTheme);
+  try {
+    const currentTheme = getCurrentTheme();
+    const newTheme: Theme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+  } catch (error) {
+    logError('error', 'Failed to toggle theme', error as Error);
+  }
 }
 
 /**
  * テーマ初期化（SSR対応）
  */
 export function initializeTheme(): void {
-  const theme = getCurrentTheme();
-  setTheme(theme);
+  try {
+    const theme = getCurrentTheme();
+    setTheme(theme);
+  } catch (error) {
+    logError('error', 'Failed to initialize theme', error as Error);
+  }
 }
 
 /**
  * システムの設定変更を監視
  */
 export function watchSystemTheme(): (() => void) | void {
-  if (typeof window !== 'undefined' && window.matchMedia) {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  return safeMediaQuery('(prefers-color-scheme: dark)', (matches) => {
+    // LocalStorageに保存されている場合はシステム設定を無視
+    const stored = safeLocalStorage('theme');
+    if (stored) {
+      return;
+    }
     
-    const handleChange = (e: MediaQueryListEvent) => {
-      // LocalStorageに保存されている場合はシステム設定を無視
-      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-        return;
-      }
-      
-      const newTheme: Theme = e.matches ? 'dark' : 'light';
-      setTheme(newTheme);
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    
-    // クリーンアップ関数を返す
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }
+    const newTheme: Theme = matches ? 'dark' : 'light';
+    setTheme(newTheme);
+  });
 }

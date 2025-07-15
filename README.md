@@ -1,68 +1,80 @@
-# Astro Starter Kit: Blog
+# あみメモ (Amin Blog)
 
-```sh
-npm create astro@latest -- --template blog
+技術メモ、趣味の記録、活動ログを発信する個人ブログです。
+
+## 🚀 Tech Stack
+
+- **Framework**: Astro 5.11.0
+- **Language**: TypeScript
+- **Styling**: Pure CSS with Custom Properties
+- **Hosting**: Cloudflare Pages
+- **Content**: Markdown/MDX
+
+## ✨ Features
+
+- 📱 **Responsive Design**: Mobile-first approach with elegant UI
+- 🌙 **Dark Mode**: Theme switching with localStorage persistence
+- 🔍 **SEO Optimized**: OpenGraph, canonical URLs, sitemap
+- 🏷️ **Tag System**: Categorized content with tag filtering
+- 📅 **Archive System**: Monthly archive organization
+- 🔧 **Error Handling**: Comprehensive error handling and 404 page
+- 🖼️ **Image Optimization**: Astro's built-in image optimization
+- 📊 **Blog Statistics**: Post count, tag count, archive metrics
+- 🎨 **Soft Elegance Design**: Lavender-based color palette
+
+## 🗂️ Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+├── content/blog/        # Blog posts (Markdown/MDX)
+├── layouts/             # Page layouts
+├── pages/              # Routes and pages
+├── styles/             # CSS files (variables, components, layouts)
+└── utils/              # Utility functions and error handling
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+## 🔧 Development
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+```bash
+# Install dependencies
+npm install
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+# Start development server
+npm run dev
 
-Features:
+# Build for production
+npm run build
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+# Preview production build
+npm run preview
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+# Type check
+npm run astro check
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🎨 Design System
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **Color Palette**: Lavender-based with gradient accents
+- **Typography**: System fonts with careful hierarchy
+- **Layout**: Clean, minimal with focus on readability
+- **Components**: Modular CSS with BEM-like naming
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## 📝 Content Management
 
-Any static assets, like images, can be placed in the `public/` directory.
+Blog posts are written in Markdown/MDX and stored in `src/content/blog/`. Each post includes:
 
-## 🧞 Commands
+- Title and description
+- Publish and update dates
+- Tags for categorization
+- Optional hero images
+- Draft status support
 
-All commands are run from the root of the project, from a terminal:
+## 🔗 Links
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **Site**: [あみめも](https://amin-kyo.xyz)
+- **Contact**: Mastodon [@amin@mstdn.jp](https://mstdn.jp/@amin)
 
-## 👀 Want to learn more?
+---
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Built with ❤️ using Astro

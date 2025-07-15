@@ -44,7 +44,14 @@ const relatedPosts = allPosts
       <header class="page-header">
         {heroImage && (
           <div class="hero-image-wrapper">
-            <Image class="hero-image" width={800} height={400} src={heroImage} alt={title} />
+            <Image 
+              class="hero-image" 
+              width={800} 
+              height={400} 
+              src={heroImage} 
+              alt={title}
+              data-error-placeholder="hero-image-placeholder"
+            />
           </div>
         )}
         
@@ -111,5 +118,64 @@ const relatedPosts = allPosts
     </main>
 
     <Footer />
+    
+    <script>
+      // 画像エラーハンドリング
+      document.addEventListener('DOMContentLoaded', () => {
+        // ヒーロー画像のエラーハンドリング
+        const heroImage = document.querySelector('.hero-image');
+        if (heroImage) {
+          heroImage.addEventListener('error', (e) => {
+            const img = e.target as HTMLImageElement;
+            const wrapper = img?.parentElement;
+            
+            if (wrapper && !wrapper.querySelector('.image-placeholder')) {
+              const placeholder = document.createElement('div');
+              placeholder.className = 'image-placeholder hero-image-placeholder';
+              placeholder.innerHTML = `
+                <div class="image-placeholder-content">
+                  <svg class="image-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="9" cy="9" r="2"/>
+                    <path d="M21 15l-3.086-3.086a2 2 0 00-2.828 0L6 21"/>
+                  </svg>
+                  <span class="image-placeholder-text">画像を読み込めませんでした</span>
+                </div>
+              `;
+              
+              img.style.display = 'none';
+              wrapper.appendChild(placeholder);
+            }
+          });
+        }
+        
+        // 記事内の全画像にエラーハンドリングを適用
+        const contentImages = document.querySelectorAll('.prose img, article img, main img');
+        contentImages.forEach(img => {
+          img.addEventListener('error', (e) => {
+            const image = e.target as HTMLImageElement;
+            const wrapper = image?.parentElement;
+            
+            if (wrapper && !wrapper.querySelector('.image-placeholder')) {
+              const placeholder = document.createElement('div');
+              placeholder.className = 'image-placeholder article-card-image-placeholder';
+              placeholder.innerHTML = `
+                <div class="image-placeholder-content">
+                  <svg class="image-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="9" cy="9" r="2"/>
+                    <path d="M21 15l-3.086-3.086a2 2 0 00-2.828 0L6 21"/>
+                  </svg>
+                  <span class="image-placeholder-text">画像を読み込めませんでした</span>
+                </div>
+              `;
+              
+              image.style.display = 'none';
+              wrapper.appendChild(placeholder);
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
