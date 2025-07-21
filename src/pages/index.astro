@@ -40,10 +40,10 @@ const totalPosts = allPosts.filter(post => !post.data.draft).length;
 		<header class="page-header">
 			<h1 class="page-title gradient-text">HOME</h1>
 		</header>
-			<p class="text-lg text-secondary">
-				最近暑くない？
-			</p>
-
+		<div class="card card-padding mb-8">
+			<p class="text-lg text-secondary">最近暑くない？</p>
+		</div>
+		
 		<section class="mb-8">
 			{sortedPosts.length === 0 ? (
 				<div class="card card-padding text-center">

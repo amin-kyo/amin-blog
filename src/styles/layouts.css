@@ -54,7 +54,7 @@
 }
 
 .site-nav a.active {
-  color: var(--primary-500);
+  color: var(--primary-700);
   border-bottom-color: var(--primary-500);
   font-weight: var(--font-semibold);
 }
@@ -154,7 +154,7 @@
 
 .header-link.active {
   font-weight: var(--font-semibold);
-  color: var(--primary-500);
+  color: var(--primary-700);
 }
 
 /* ===== FormattedDate.astro 専用スタイル ===== */

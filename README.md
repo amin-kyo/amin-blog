@@ -34,25 +34,6 @@ src/
 └── utils/              # Utility functions and error handling
 ```
 
-## 🔧 Development
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Type check
-npm run astro check
-```
-
 ## 🎨 Design System
 
 - **Color Palette**: Lavender-based with gradient accents
@@ -74,7 +55,3 @@ Blog posts are written in Markdown/MDX and stored in `src/content/blog/`. Each p
 
 - **Site**: [あみめも](https://amin-kyo.xyz)
 - **Contact**: Mastodon [@amin@mstdn.jp](https://mstdn.jp/@amin)
-
----
-
-Built with ❤️ using Astro
