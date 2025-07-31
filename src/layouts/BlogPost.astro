@@ -55,7 +55,7 @@ const relatedPosts = allPosts
           </div>
         )}
         
-        <h1 class="page-title gradient-text">{title}</h1>
+        <h1 class="page-title gradient-text" data-pagefind-filter="type:blog-post">{title}</h1>
         
         <div class="flex justify-center flex-wrap gap-4 mb-6">
           <time class="text-sm text-secondary" datetime={publishDate.toISOString()}>

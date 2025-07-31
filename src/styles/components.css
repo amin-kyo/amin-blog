@@ -879,3 +879,222 @@
     height: 22px;
   }
 }
+
+/* ===== BlogSearch コンポーネント ===== */
+.blog-search-container {
+  max-width: 600px;
+  margin: 0 auto var(--space-6) auto;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.blog-search-input {
+  width: 100%;
+  height: 52px;
+  padding: var(--space-4) var(--space-12) var(--space-4) var(--space-4);
+  border: 2px solid var(--gray-300);
+  border-radius: var(--radius-xl);
+  background: var(--color-white);
+  color: var(--gray-900);
+  font-size: var(--text-lg);
+  font-family: var(--font-primary);
+  transition: var(--transition-all);
+  box-sizing: border-box;
+  line-height: 1.5;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.blog-search-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(177, 156, 217, 0.2);
+}
+
+.blog-search-input::placeholder {
+  color: var(--gray-500);
+}
+
+.search-icon {
+  position: absolute;
+  right: var(--space-4);
+  color: var(--gray-500);
+  pointer-events: none;
+  transition: var(--transition-all);
+}
+
+.blog-search-input:focus + .search-icon {
+  color: var(--primary-500);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: var(--space-10);
+  background: none;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  transition: var(--transition-all);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-clear-btn:hover {
+  color: var(--gray-700);
+  background: var(--gray-100);
+}
+
+.search-status {
+  margin-top: var(--space-3);
+  text-align: center;
+  color: var(--gray-600);
+  font-size: var(--text-sm);
+  padding: var(--space-2);
+}
+
+.search-status.loading {
+  color: var(--primary-500);
+}
+
+.search-status.loading::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--primary-200);
+  border-top: 2px solid var(--primary-500);
+  border-radius: 50%;
+  animation: blog-search-spin 1s linear infinite;
+  margin-right: var(--space-2);
+  vertical-align: middle;
+}
+
+.search-no-results,
+.search-error {
+  margin: var(--space-8) 0;
+}
+
+.search-icon-large {
+  color: var(--gray-400);
+  margin: 0 auto;
+}
+
+.search-suggestions {
+  background: var(--gray-50);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.search-suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-suggestions li {
+  margin-bottom: var(--space-1);
+}
+
+.search-result-card {
+  transition: var(--transition-all);
+  position: relative;
+  overflow: hidden;
+}
+
+.search-result-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: var(--transition-all);
+}
+
+.search-result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.search-result-card:hover::before {
+  opacity: 1;
+}
+
+@keyframes blog-search-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ダークモード対応 */
+[data-theme="dark"] .blog-search-input {
+  background: var(--gray-800);
+  color: var(--gray-100);
+  border-color: var(--gray-600);
+}
+
+[data-theme="dark"] .blog-search-input:focus {
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 3px rgba(201, 179, 227, 0.2);
+}
+
+[data-theme="dark"] .blog-search-input::placeholder {
+  color: var(--gray-400);
+}
+
+[data-theme="dark"] .search-icon {
+  color: var(--gray-400);
+}
+
+[data-theme="dark"] .blog-search-input:focus + .search-icon {
+  color: var(--primary-400);
+}
+
+[data-theme="dark"] .search-clear-btn {
+  color: var(--gray-400);
+}
+
+[data-theme="dark"] .search-clear-btn:hover {
+  color: var(--gray-200);
+  background: var(--gray-700);
+}
+
+[data-theme="dark"] .search-status {
+  color: var(--gray-300);
+}
+
+[data-theme="dark"] .search-status.loading {
+  color: var(--primary-400);
+}
+
+[data-theme="dark"] .search-icon-large {
+  color: var(--gray-500);
+}
+
+[data-theme="dark"] .search-suggestions {
+  background: var(--gray-800);
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .blog-search-input {
+    height: 48px;
+    font-size: var(--text-base);
+    padding: var(--space-3) var(--space-10) var(--space-3) var(--space-3);
+  }
+  
+  .search-clear-btn {
+    right: var(--space-8);
+  }
+}

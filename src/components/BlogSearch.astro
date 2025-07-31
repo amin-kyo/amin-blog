@@ -1,0 +1,347 @@
+---
+// Blog専用検索コンポーネント
+interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<div class={`blog-search-container ${className}`}>
+  <div class="search-input-wrapper">
+    <input
+      type="text"
+      id="blog-search-input"
+      class="blog-search-input"
+      placeholder="記事を検索..."
+      autocomplete="off"
+      spellcheck="false"
+      role="searchbox"
+      aria-label="ブログ記事を検索"
+      aria-describedby="search-status"
+    />
+    <div class="search-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="M21 21l-4.35-4.35"></path>
+      </svg>
+    </div>
+    <button class="search-clear-btn" id="search-clear-btn" style="display: none;" aria-label="検索をクリア">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  
+  <!-- 検索状態表示 -->
+  <div class="search-status" id="search-status" style="display: none;">
+    <span class="search-status-text" id="search-status-text"></span>
+  </div>
+</div>
+
+<script is:inline>
+  // Blog検索の実装
+  window.addEventListener('DOMContentLoaded', async () => {
+    let pagefind = null;
+    let isInitialized = false;
+    let isSearching = false;
+    
+    // DOM要素の取得
+    const searchInput = document.getElementById('blog-search-input');
+    const clearBtn = document.getElementById('search-clear-btn');
+    const statusDiv = document.getElementById('search-status');
+    const statusText = document.getElementById('search-status-text');
+    const articlesContainer = document.getElementById('articles-container');
+    const paginationContainer = document.getElementById('pagination-container');
+    
+    if (!searchInput || !articlesContainer) return;
+    
+    // 元の記事コンテンツを保存
+    let originalArticlesHTML = articlesContainer.innerHTML;
+    let originalPaginationHTML = paginationContainer ? paginationContainer.innerHTML : '';
+    
+    // Pagefindの初期化
+    async function initializePagefind() {
+      if (pagefind && isInitialized) return pagefind;
+      
+      try {
+        // @ts-ignore
+        pagefind = await import('/pagefind/pagefind.js');
+        await pagefind.init();
+        await pagefind.options({
+          'excerptLength': 50,
+        });
+        isInitialized = true;
+        return pagefind;
+      } catch (error) {
+        console.error('Pagefind initialization error:', error);
+        throw error;
+      }
+    }
+    
+    // 検索状態の更新
+    function updateSearchStatus(message, isLoading = false) {
+      if (statusDiv && statusText) {
+        statusText.textContent = message;
+        statusDiv.style.display = message ? 'block' : 'none';
+        statusDiv.className = `search-status ${isLoading ? 'loading' : ''}`;
+      }
+    }
+    
+    // 元の記事一覧に戻す
+    function restoreOriginalArticles() {
+      articlesContainer.innerHTML = originalArticlesHTML;
+      if (paginationContainer) {
+        paginationContainer.innerHTML = originalPaginationHTML;
+      }
+      updateSearchStatus('');
+      isSearching = false;
+    }
+    
+    // 検索結果を表示
+    async function displaySearchResults(results, query, searchTime = 0) {
+      if (results.length === 0) {
+        articlesContainer.innerHTML = `
+          <div class="search-no-results card card-padding text-center">
+            <div class="search-icon-large mb-4">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+              </svg>
+            </div>
+            <h3 class="mb-4">検索結果が見つかりませんでした</h3>
+            <p class="text-secondary mb-6">"<strong>${escapeHtml(query)}</strong>" に一致する記事はありません。</p>
+            <button class="btn btn-primary" onclick="document.getElementById('blog-search-input').value = ''; document.getElementById('blog-search-input').dispatchEvent(new Event('input'));">
+              すべての記事を表示
+            </button>
+          </div>
+        `;
+        if (paginationContainer) {
+          paginationContainer.innerHTML = '';
+        }
+        updateSearchStatus(`"${query}" の検索結果: 0件${searchTime ? ` (${searchTime}ms)` : ''}`);
+        return;
+      }
+      
+      // 最初の10件の結果を処理
+      const maxResults = Math.min(results.length, 10);
+      const resultPromises = results.slice(0, maxResults).map(result => result.data());
+      
+      try {
+        const resultData = await Promise.all(resultPromises);
+        
+        // 検索結果のHTML生成
+        let resultsHTML = '<div class="grid grid-auto-fill gap-6">';
+        
+        resultData.forEach(data => {
+          const title = data.meta?.title || 'タイトルなし';
+          const excerpt = data.excerpt || '';
+          const url = data.url;
+          
+          // URLからslugを抽出
+          const slug = url.replace('/blog/', '').replace('/index.html', '').replace('/', '');
+          
+          // 日付の処理（meta情報から取得を試行）
+          const publishDate = data.meta?.publishDate || data.meta?.date || new Date().toISOString();
+          const formattedDate = new Date(publishDate).toLocaleDateString('ja-JP', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          
+          // タグの処理
+          const tags = data.meta?.tags ? data.meta.tags.split(',').map(tag => tag.trim()) : [];
+          const tagsHTML = tags.map(tag => 
+            `<a href="/blog/tags/${tag}" class="tag">#${tag}</a>`
+          ).join('');
+          
+          resultsHTML += `
+            <article class="card card-padding search-result-card">
+              <h2 class="article-title mb-3">
+                <a href="/blog/${slug}">${escapeHtml(title)}</a>
+              </h2>
+              <time class="text-sm text-secondary mb-3 block" datetime="${publishDate}">
+                ${formattedDate}
+              </time>
+              <p class="text-secondary mb-4 leading-relaxed">
+                ${escapeHtml(excerpt)}
+              </p>
+              ${tagsHTML ? `<div class="flex flex-wrap gap-2">${tagsHTML}</div>` : ''}
+            </article>
+          `;
+        });
+        
+        resultsHTML += '</div>';
+        
+        articlesContainer.innerHTML = resultsHTML;
+        
+        // ページネーションを非表示
+        if (paginationContainer) {
+          paginationContainer.innerHTML = '';
+        }
+        
+        // 検索結果サマリー
+        const resultSummary = results.length > maxResults 
+          ? `"${query}" の検索結果: ${results.length}件中${maxResults}件を表示${searchTime ? ` (${searchTime}ms)` : ''}`
+          : `"${query}" の検索結果: ${results.length}件${searchTime ? ` (${searchTime}ms)` : ''}`;
+        
+        updateSearchStatus(resultSummary);
+        
+      } catch (error) {
+        console.error('Error displaying search results:', error);
+        articlesContainer.innerHTML = `
+          <div class="search-error card card-padding text-center">
+            <h3 class="mb-4">検索結果表示エラー</h3>
+            <p class="text-secondary mb-4">検索結果の表示中にエラーが発生しました。</p>
+            <button class="btn btn-outline" onclick="document.getElementById('blog-search-input').value = ''; document.getElementById('blog-search-input').dispatchEvent(new Event('input'));">
+              検索をリセット
+            </button>
+          </div>
+        `;
+        updateSearchStatus('検索結果の表示に失敗しました');
+      }
+    }
+    
+    // HTMLエスケープ
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // 検索実行
+    async function performSearch(query) {
+      const trimmedQuery = query.trim();
+      
+      if (trimmedQuery.length === 0) {
+        restoreOriginalArticles();
+        clearBtn.style.display = 'none';
+        return;
+      }
+      
+      if (trimmedQuery.length < 2) {
+        updateSearchStatus('2文字以上入力してください');
+        clearBtn.style.display = 'block';
+        return;
+      }
+      
+      try {
+        isSearching = true;
+        updateSearchStatus('検索中...', true);
+        clearBtn.style.display = 'block';
+        
+        const pf = await initializePagefind();
+        
+        // プリロード（パフォーマンス向上）
+        if (trimmedQuery.length >= 1) {
+          pf.preload(trimmedQuery.charAt(0));
+        }
+        
+        // 検索開始時間記録
+        const searchStartTime = performance.now();
+        
+        const search = await pf.search(trimmedQuery, {
+          filters: {
+            type: "blog-post"
+          }
+        });
+        
+        // 検索完了時間計算
+        const searchEndTime = performance.now();
+        const searchTime = Math.round(searchEndTime - searchStartTime);
+        
+        await displaySearchResults(search.results, trimmedQuery, searchTime);
+        
+      } catch (error) {
+        console.error('Search error:', error);
+        updateSearchStatus('検索に失敗しました');
+        articlesContainer.innerHTML = `
+          <div class="search-error card card-padding text-center">
+            <h3 class="mb-4">検索エラー</h3>
+            <p class="text-secondary mb-4">検索処理中にエラーが発生しました。</p>
+            <button class="btn btn-outline" onclick="location.reload()">
+              ページを再読み込み
+            </button>
+          </div>
+        `;
+      }
+    }
+    
+    // デバウンス処理
+    let searchTimeout;
+    function debouncedSearch(query) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => performSearch(query), 300);
+    }
+    
+    // イベントリスナー
+    searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
+    });
+    
+    // クリアボタン
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      restoreOriginalArticles();
+      clearBtn.style.display = 'none';
+      searchInput.focus();
+    });
+    
+    // 検索フォーカス時にPagefindを初期化
+    searchInput.addEventListener('focus', async () => {
+      if (!isInitialized) {
+        try {
+          await initializePagefind();
+        } catch (error) {
+          console.error('Failed to initialize search on focus:', error);
+        }
+      }
+    });
+    
+    // キーボードナビゲーション
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (searchInput.value) {
+          searchInput.value = '';
+          restoreOriginalArticles();
+          clearBtn.style.display = 'none';
+        } else {
+          searchInput.blur();
+        }
+      } else if (e.key === 'Enter') {
+        // Enterキーで即座に検索実行
+        performSearch(searchInput.value);
+      } else if (e.key === 'ArrowDown') {
+        // 下矢印キーで最初の検索結果にフォーカス
+        const firstResult = document.querySelector('.search-result-card a');
+        if (firstResult) {
+          e.preventDefault();
+          firstResult.focus();
+        }
+      }
+    });
+    
+    // 検索結果内のキーボードナビゲーション
+    document.addEventListener('keydown', (e) => {
+      if (isSearching && e.key === 'ArrowUp' && e.target.closest('.search-result-card')) {
+        e.preventDefault();
+        const currentResult = e.target.closest('.search-result-card');
+        const prevResult = currentResult.previousElementSibling?.querySelector('a');
+        if (prevResult) {
+          prevResult.focus();
+        } else {
+          searchInput.focus();
+        }
+      } else if (isSearching && e.key === 'ArrowDown' && e.target.closest('.search-result-card')) {
+        e.preventDefault();
+        const currentResult = e.target.closest('.search-result-card');
+        const nextResult = currentResult.nextElementSibling?.querySelector('a');
+        if (nextResult) {
+          nextResult.focus();
+        }
+      }
+    });
+  });
+</script>
+

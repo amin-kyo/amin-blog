@@ -36,6 +36,7 @@
   align-items: center;
   justify-content: space-between;
   min-height: 64px;
+  gap: var(--space-4);
 }
 
 .site-nav a {

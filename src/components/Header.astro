@@ -52,25 +52,7 @@ import { SITE_TITLE } from '../consts';
 		if (themeToggle) {
 			themeToggle.addEventListener('click', () => {
 				toggleTheme();
-				updateThemeIcon();
 			});
 		}
-		
-		// 初期アイコンの設定
-		updateThemeIcon();
 	});
-	
-	function updateThemeIcon() {
-		const currentTheme = document.documentElement.getAttribute('data-theme');
-		const sunIcon = document.querySelector('.theme-icon-sun');
-		const moonIcon = document.querySelector('.theme-icon-moon');
-		
-		if (currentTheme === 'dark') {
-			sunIcon?.style.setProperty('display', 'block');
-			moonIcon?.style.setProperty('display', 'none');
-		} else {
-			sunIcon?.style.setProperty('display', 'none');
-			moonIcon?.style.setProperty('display', 'block');
-		}
-	}
 </script>

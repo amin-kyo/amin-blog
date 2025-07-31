@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import Pagination from '../../components/Pagination.astro';
+import BlogSearch from '../../components/BlogSearch.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import { getAllTags } from '../../utils/blog';
@@ -113,9 +114,12 @@ const sortedArchive = Object.entries(monthlyArchive)
         </p> -->
       </header>
 
+      <!-- 検索バー -->
+      <BlogSearch />
+
       <div class="blog-layout">
         <!-- メインコンテンツ -->
-        <section class="articles-section">
+        <section class="articles-section" id="articles-container">
           <!-- 記事一覧 -->
           {page.data.length === 0 ? (
             <div class="card card-padding text-center">
@@ -134,15 +138,17 @@ const sortedArchive = Object.entries(monthlyArchive)
               ))}
             </div>
           )}
-
+          
           <!-- ページネーション -->
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            baseUrl={baseUrl}
-            prevUrl={prevUrl}
-            nextUrl={nextUrl}
-          />
+          <div id="pagination-container">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseUrl={baseUrl}
+              prevUrl={prevUrl}
+              nextUrl={nextUrl}
+            />
+          </div>
         </section>
 
         <!-- サイドバー -->
