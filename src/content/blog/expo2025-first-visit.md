@@ -3,7 +3,7 @@ title: '大阪万博1回目ログ'
 description: ''
 publishDate: '2025-08-01'
 heroImage: '../../assets/images/2025-08-01-expo2025-obje.jpg'
-tags: ['diary','ivent']
+tags: ['diary','event']
 ---
 
 6月6日に大阪万博に初めて行った時のログです。もう2ヶ月近く経ってる……  
